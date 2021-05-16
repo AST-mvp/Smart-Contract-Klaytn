@@ -1,0 +1,17 @@
+{
+  "name": "Ast",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Ast_caver.js",
+  "dependencies": {
+    "caver-js": "^1.6.1",
+    "truffle-hdwallet-provider-klaytn": "^1.0.13-a"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
