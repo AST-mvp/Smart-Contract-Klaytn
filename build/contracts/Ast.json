@@ -2697,12 +2697,21 @@
     "1001": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x9c7D025D1020582e9806BD6A574570D996302e1B",
       "transactionHash": "0x18d771c064c5b3121c9867dd34c415cb8726469ba1e76e8340405a6c41310828"
     }
   },
   "schemaVersion": "3.3.4",
   "updatedAt": "2021-05-17T01:44:30.885Z",
+=======
+      "address": "0xd1AF5Fda5770cc7d2783A59eb845C7e1B520e1ab",
+      "transactionHash": "0xc73e988ad72a549e94ef30a9f47204f459ffad0db3259dbfd64a313ae1c0b66b"
+    }
+  },
+  "schemaVersion": "3.4.1",
+  "updatedAt": "2021-05-15T09:49:25.865Z",
+>>>>>>> d302ea2e7d39d957fbe31185cc1ab5983261a0d4
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

@@ -4,6 +4,7 @@
   "description": "",
   "main": "Ast_caver.js",
   "dependencies": {
+<<<<<<< HEAD
     "body-parser": "^1.19.0",
     "caver-js": "^1.6.1",
     "express": "^4.17.1",
@@ -16,12 +17,16 @@
     "request": "^2.88.2",
     "sha256": "^0.2.0",
     "sqlite3": "^5.0.2",
+=======
+    "caver-js": "^1.6.1",
+>>>>>>> d302ea2e7d39d957fbe31185cc1ab5983261a0d4
     "truffle-hdwallet-provider-klaytn": "^1.0.13-a"
   },
   "devDependencies": {},
   "scripts": {
     "test": "mocha"
   },
+<<<<<<< HEAD
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AST-mvp/smart-contract-klaytn.git"
@@ -33,4 +38,9 @@
     "url": "https://github.com/AST-mvp/smart-contract-klaytn/issues"
   },
   "homepage": "https://github.com/AST-mvp/smart-contract-klaytn#readme"
+=======
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+>>>>>>> d302ea2e7d39d957fbe31185cc1ab5983261a0d4
 }
