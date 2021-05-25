@@ -98,7 +98,7 @@ app.get('/users/me', function (req, res) {
             result: "login required"
         })
     }
-    const sql = `SELECT userid FROM account WHERE name = '${user}'`;
+    const sql = `SELECT * FROM account WHERE name = '${user}'`;
     db.get(sql, [], (err, rows) => {
         if (err) {
             return res.status(400).json({
@@ -110,7 +110,8 @@ app.get('/users/me', function (req, res) {
                 if (rows.userid) {
                     return res.status(200).json({
                         username: user,
-                        userID: rows.userid
+                        userID: rows.userid,
+                        isAdmin: rows.isAdmin
                     })
                 }
                 else {
@@ -171,50 +172,80 @@ app.get('/users/me', function (req, res) {
 
 app.get('/products', function (req, res) {
     try {
-        if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"] === "admin") {
+        var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
+    }
+    catch (e) {
+        return res.status(401).json({
+            result: "login required"
+        })
+    }
+    db.get(`SELECT isAdmin FROM account WHERE "name" = '${user}'`, [], (err, rows) => {
+        if (err)
+            return res.status(400).json({
+                result: "sql error"
+            });
+        if (rows.isAdmin)
             Ast.allProductInfo().then(result => {
                 return res.status(200).json({
                     result
                 })
             })
-        }
         else
             return res.status(403).json({
                 result: "admin required"
             })
-    }
-    catch (e) {
-        console.log(e);
-        return res.status(401).json({
-            result: "login required"
-        })
-    }
+    });
 });
 
 app.post("/products", function (req, res) {
     try {
-        if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"] === "admin") {
-            Ast.registerProductInfo(req.body.nfcID, req.body.brandID, req.body.productID, req.body.editionID, req.body.manufactureDate, req.body.limited, req.body.ownerID).then(result => {
-                if (result)
-                    return res.status(200).json({
-                        result: "success"
-                    })
-                else
-                    return res.status(400).json({
-                        result: "nfcID already exists"
-                    })
-            });
-        }
-        else
-            return res.status(403).json({
-                result: "admin required"
-            })
+        var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
     }
     catch (e) {
         return res.status(401).json({
             result: "login required"
         })
     }
+    db.get(`SELECT isAdmin FROM account WHERE "name" = '${user}'`, [], (err, rows) => {
+        if (err)
+            return res.status(400).json({
+                result: "sql error"
+            });
+        if (rows.isAdmin) {
+            if (req.body.brandID && req.body.productID && req.body.editionID) {
+                db.get(`SELECT seq FROM sqlite_sequence WHERE name = 'product'`, [], (err, rows) => {
+                    if (err) {
+                        console.log(err)
+                        return res.status(400).json({
+                            result: "sql error"
+                        });
+                    }
+                    else {
+                        db.run(`INSERT INTO product(brandname, productname, editionname)VALUES('${req.body.brandID}', '${req.body.productID}', '${req.body.editionID}')`);
+                        Ast.registerProductInfo(req.body.nfcID, rows.seq, rows.seq, rows.seq, req.body.manufactureDate, req.body.limited, req.body.ownerID).then(result => {
+                            if (result) {
+                                return res.status(200).json({
+                                    result: "success"
+                                })
+                            }
+                            else
+                                return res.status(400).json({
+                                    result: "nfcID already exists"
+                                })
+                        });
+                    }
+                });
+            }
+            else
+                return res.status(400).json({
+                    result: "err"
+                })
+        }
+        else
+            return res.status(403).json({
+                result: "admin required"
+            })
+    });
 });
 
 app.get('/products/:nfcid', function (req, res) {
