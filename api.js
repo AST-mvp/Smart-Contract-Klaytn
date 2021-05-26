@@ -8,6 +8,8 @@ const { PythonShell } = require("python-shell");
 const fs = require('fs');
 const sha256 = require("sha256");
 const request = require("request");
+const https = require("https");
+const http = require("http");
 const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err);
@@ -22,7 +24,7 @@ const { json } = require("body-parser");
 require("dotenv").config();
 app.use(logger("short"));
 
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 80;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -447,6 +449,15 @@ app.post('/auth/oauth/google', function (req, res) {
     }
 });
 
-app.listen(PORT, function () {
-    console.log(`Connected port ${PORT}`);
-});
+// app.listen(PORT, function () {
+//     console.log(`Connected port ${PORT}`);
+// });
+
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/fullchain.pem')
+};
+
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);
