@@ -1,5 +1,5 @@
 {
-  "name": "Ast",
+  "name": "ast",
   "version": "1.0.0",
   "description": "",
   "main": "Ast_caver.js",
@@ -7,7 +7,7 @@
     "body-parser": "^1.19.0",
     "caver-js": "^1.6.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
+    "express-session": "^1.17.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
@@ -16,7 +16,9 @@
     "request": "^2.88.2",
     "sha256": "^0.2.0",
     "sqlite3": "^5.0.2",
-    "truffle-hdwallet-provider-klaytn": "^1.0.13-a"
+    "truffle-hdwallet-provider-klaytn": "^1.0.13-a",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {},
   "scripts": {

@@ -4,12 +4,18 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const app = express();
 const sqlite3 = require("sqlite3");
-const { PythonShell } = require("python-shell");
+//const { PythonShell } = require("python-shell");
 const fs = require('fs');
 const sha256 = require("sha256");
 const request = require("request");
 const https = require("https");
 const http = require("http");
+// const log_saver = require('./config/winston');
+const logger = require("morgan");
+const Ast = require("./Ast_caver");
+const { json } = require("body-parser");
+
+const PORT = process.env.PORT || 80;
 const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err);
@@ -17,14 +23,14 @@ const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err)
         console.log('account.db connected');
     }
 });
-const logger = require("morgan");
-const Ast = require("./Ast_caver");
-const { json } = require("body-parser");
 
 require("dotenv").config();
 app.use(logger("short"));
-
-const PORT = process.env.PORT || 80;
+// app.use(logger("combined", { stream: log_saver.stream.write }));
+// app.use(function (err, req, res, next) {
+//     log_saver.error(`${req.method} - ${err.message}  - ${req.originalUrl} - ${req.ip}`);
+//     next(err)
+// })
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -188,8 +194,20 @@ app.get('/products', function (req, res) {
             });
         if (rows.isAdmin)
             Ast.allProductInfo().then(result => {
+                var products = new Array;
+                for (i = 0; i < result.length; i++) {
+                    products.push({
+                        "nfcID":result[i][0],
+                        "brandID":result[i][1],
+                        "productID":result[i][2],
+                        "editionID":result[i][3],
+                        "manufactureDate":result[i][4],
+                        "limited":result[i][5],
+                        "ownerID":result[i][6]
+                    });
+                }
                 return res.status(200).json({
-                    result
+                    products
                 })
             })
         else
@@ -459,5 +477,5 @@ const options = {
     ca: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/fullchain.pem')
 };
 
-http.createServer(app).listen(80);
-https.createServer(options, app).listen(443);
+const server_80 = http.createServer(app).listen(80);
+const server_443 = https.createServer(options, app).listen(443);
