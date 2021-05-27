@@ -25,12 +25,11 @@ const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err)
 });
 
 require("dotenv").config();
-app.use(logger("short"));
-// app.use(logger("combined", { stream: log_saver.stream.write }));
-// app.use(function (err, req, res, next) {
-//     log_saver.error(`${req.method} - ${err.message}  - ${req.originalUrl} - ${req.ip}`);
-//     next(err)
-// })
+
+app.use(logger('common', {
+    stream: fs.createWriteStream('./log/console.log', {flags: 'a'})
+}));
+app.use(logger('dev'));
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
