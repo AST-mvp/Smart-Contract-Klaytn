@@ -197,13 +197,13 @@ app.get('/products', function (req, res) {
                 var products = new Array;
                 for (i = 0; i < result.length; i++) {
                     products.push({
-                        "nfcID":result[i][0],
-                        "brandID":result[i][1],
-                        "productID":result[i][2],
-                        "editionID":result[i][3],
-                        "manufactureDate":result[i][4],
-                        "limited":result[i][5],
-                        "ownerID":result[i][6]
+                        "nfcID": result[i][0],
+                        "brandID": result[i][1],
+                        "productID": result[i][2],
+                        "editionID": result[i][3],
+                        "manufactureDate": result[i][4],
+                        "limited": result[i][5],
+                        "ownerID": result[i][6]
                     });
                 }
                 return res.status(200).json({
@@ -243,11 +243,10 @@ app.post("/products", function (req, res) {
                     else {
                         db.run(`INSERT INTO product(brandname, productname, editionname)VALUES('${req.body.brandID}', '${req.body.productID}', '${req.body.editionID}')`);
                         Ast.registerProductInfo(req.body.nfcID, rows.seq, rows.seq, rows.seq, req.body.manufactureDate, req.body.limited, req.body.ownerID).then(result => {
-                            if (result) {
+                            if (result)
                                 return res.status(200).json({
                                     result: "success"
                                 })
-                            }
                             else
                                 return res.status(400).json({
                                     result: "nfcID already exists"
@@ -382,23 +381,30 @@ app.get('/closet', function (req, res) {
                 try {
                     if (rows.userid) {
                         Ast.allProductInfo().then(result => {
-                            var arr = new Array();
+                            var products = new Array();
                             for (var i = 0; i < result.length; i++) {
                                 if (rows.userid == result[i][6]) {
                                     console.log(rows.userid, result[i]);
-                                    arr.push(result[i]);
+                                    products.push({
+                                        "nfcID": result[i][0],
+                                        "brandID": result[i][1],
+                                        "productID": result[i][2],
+                                        "editionID": result[i][3],
+                                        "manufactureDate": result[i][4],
+                                        "limited": result[i][5],
+                                        "ownerID": result[i][6]
+                                    });
                                 }
                             }
                             return res.status(200).json({
-                                result: arr
+                                result: products
                             })
                         });
                     }
-                    else {
+                    else
                         return res.status(404).json({
                             result: "invalid user"
                         })
-                    }
                 }
                 catch (e) {
                     console.log("invalid user")
@@ -412,7 +418,6 @@ app.get('/closet', function (req, res) {
             message: "login required"
         });
     }
-
 });
 
 app.post('/auth/oauth/kakao', function (req, res) {
