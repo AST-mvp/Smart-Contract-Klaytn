@@ -52,11 +52,10 @@ app.get('/', function (req, res) {
 app.post('/login', function (req, res) {
     const sql = `SELECT pw FROM account WHERE name = '${req.body.id}'`;
     db.get(sql, [], (err, rows) => {
-        if (err) {
+        if (err)
             return res.status(400).json({
                 result: "sql error"
             });
-        }
         else {
             console.log(rows)
             try {
@@ -67,15 +66,14 @@ app.post('/login', function (req, res) {
                         access_token: token
                     })
                 }
-                else {
+                else
                     return res.status(404).json({
-                        result: `invalid id`
+                        result: "invalid id"
                     })
-                }
             }
             catch (e) {
                 return res.status(400).json({
-                    result: `err`
+                    result: "err"
                 })
             }
         }
@@ -107,25 +105,22 @@ app.get('/users/me', function (req, res) {
     }
     const sql = `SELECT * FROM account WHERE name = '${user}'`;
     db.get(sql, [], (err, rows) => {
-        if (err) {
+        if (err)
             return res.status(400).json({
                 result: "sql error"
             });
-        }
         else {
             try {
-                if (rows.userid) {
+                if (rows.userid)
                     return res.status(200).json({
                         username: user,
                         userID: rows.userid,
                         isAdmin: rows.isAdmin
                     })
-                }
-                else {
+                else
                     return res.status(404).json({
                         result: "invalid token"
                     })
-                }
             }
             catch (e) {
                 console.log("invalid user");
@@ -134,48 +129,55 @@ app.get('/users/me', function (req, res) {
     });
 });
 
-// app.post('/users/add', function (req, res) {
-//     let userid_hash = sha256(req.body.id + process.env.JWT_SECRET);
-//     try {
-//         var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
-//         if (user !== "admin") // token 이 admin 권한이 아닐때
-//             return res.status(403).json({
-//                 result: "admin required"
-//             })
-//     }
-//     catch (e) { // authorization header 가 없을때 
-//         return res.status(401).json({
-//             result: "login required"
-//         })
-//     }
-//     try {
-//         const sql = `SELECT EXISTS (select * from account where name = '${req.body.id}') as success;"`;
-//         db.get(sql, [], (err, rows) => {
-//             if (err) {
-//                 console.log(err)
-//                 return res.status(400).json({
-//                     result: "sql error"
-//                 });
-//             }
-//             else {
-//                 if (rows.success) { // 이미 해당 user가 존재할 경우
-//                     return res.status(400).json({
-//                         result: "user already exists"
-//                     })
-//                 }
-//                 db.run(`INSERT INTO account(name, pw, userid)VALUES('${req.body.id}', '${sha256(req.body.pw)}', '${String(userid_hash)}')`);
-//                 return res.status(200).json({
-//                     result: "success"
-//                 })
-//             }
-//         });
-//     }
-//     catch (e) { // post data가 잘못되었을때
-//         return res.status(400).json({
-//             result: "err"
-//         })
-//     }
-// });
+app.post('/users/register', function (req, res) {
+    try {
+        var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
+        db.get(`SELECT isAdmin FROM account WHERE name = '${user}'`, [], (err, rows) => {
+            if (err)
+                return res.status(400).json({
+                    result: "sql error"
+                });
+            if (rows.isAdmin){
+                try {
+                    const sql = `SELECT EXISTS (select * from account where name = '${req.body.id}') as success;`;
+                    db.get(sql, [], (err, rows2) => {
+                        if (err) {
+                            console.log(err)
+                            return res.status(400).json({
+                                result: "sql error"
+                            });
+                        }
+                        else {
+                            if (rows2.success)
+                                return res.status(400).json({
+                                    result: "user already exists"
+                                })
+                            var rand = Math.random() * (9999 - 2010) + 2010;
+                            db.run(`INSERT INTO account(name, pw, userid, isAdmin)VALUES('${req.body.id}', '${sha256(req.body.pw)}', '${rand}', ${req.body.isAdmin})`);
+                            return res.status(200).json({
+                                result: "success"
+                            })
+                        }
+                    });
+                }
+                catch (e) {
+                    return res.status(400).json({
+                        result: "err"
+                    })
+                }
+            }
+            else
+                return res.status(403).json({
+                    result: "admin required"
+                })
+        });
+    }
+    catch (e) {
+        return res.status(401).json({
+            result: "login required"
+        })
+    }
+});
 
 app.get('/products', function (req, res) {
     try {
@@ -326,11 +328,10 @@ app.post('/products/trade', function (req, res) {
                                                     result: "nfcID not exists"
                                                 })
                                             else {
-                                                if (req.body.userID === userID) {
+                                                if (req.body.userID === userID)
                                                     return res.status(400).json({
                                                         result: "can't change ownership to me"
                                                     })
-                                                }
                                                 else {
                                                     Ast.changeOwnership(req.body.nfcID, req.body.userID).then(result => {
                                                         if (result)
@@ -416,7 +417,6 @@ app.get('/closet', function (req, res) {
                 }
             }
         });
-
     }
     catch (e) {
         return res.status(401).json({
