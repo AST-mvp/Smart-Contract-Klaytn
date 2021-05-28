@@ -27,7 +27,7 @@ const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err)
 require("dotenv").config();
 
 app.use(logger('common', {
-    stream: fs.createWriteStream('./log/console.log', {flags: 'a'})
+    stream: fs.createWriteStream('./log/console.log', { flags: 'a' })
 }));
 app.use(logger('dev'));
 
@@ -270,13 +270,19 @@ app.get('/products/:nfcid', function (req, res) {
     try {
         if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]) {
             Ast.allProductInfo().then(result => {
-                for (var i = 0; i < result.length; i++) {
-                    if (result[i][0] == req.params.nfcid) {
+                for (var i = 0; i < result.length; i++)
+                    if (result[i][0] == req.params.nfcid)
                         return res.status(200).json({
-                            result: result[i]
-                        });
-                    }
-                }
+                            products: {
+                                "nfcID": result[i][0],
+                                "brandID": result[i][1],
+                                "productID": result[i][2],
+                                "editionID": result[i][3],
+                                "manufactureDate": result[i][4],
+                                "limited": result[i][5],
+                                "ownerID": result[i][6]
+                            }
+                        })
                 return res.status(404).json({
                     result: "invalid nfcID"
                 });
