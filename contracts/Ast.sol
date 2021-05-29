@@ -5,11 +5,12 @@ pragma experimental ABIEncoderV2;
 contract Ast {
   struct ProductInfo {
     uint256 nfcId;
-    uint256 brandId;
-    uint256 productId;
-    uint256 editionId;
-    string manufactureDate;
+    bytes32 brandId;
+    bytes32 productId;
+    bytes32 editionId;
+    bytes32 manufactureDate;
     bool isLimited;
+    bool isAppeared;
     uint256 ownerId;
   }
 
@@ -26,15 +27,16 @@ contract Ast {
 
   function registerProductInfo(
     uint256 nfcId,
-    uint256 brandId,
-    uint256 productId,
-    uint256 editionId,
-    string memory manufactureDate,
+    bytes32 brandId,
+    bytes32 productId,
+    bytes32 editionId,
+    bytes32 manufactureDate,
     bool isLimited,
+    bool isAppeared,
     uint256 ownerId
   ) public onlyOwner() {
     products.push(
-      ProductInfo(nfcId, brandId, productId, editionId, manufactureDate, isLimited, ownerId)
+      ProductInfo(nfcId, brandId, productId, editionId, manufactureDate, isLimited, isAppeared, ownerId)
       );
   }
 
