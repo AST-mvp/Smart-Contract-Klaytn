@@ -152,7 +152,7 @@ app.post('/users/register', function (req, res) {
                                 return res.status(400).json({
                                     result: "user already exists"
                                 })
-                            var rand = Math.random() * (9999 - 2010) + 2010;
+                            var rand = Math.floor(Math.random() * (9999 - 2010) + 2010);
                             db.run(`INSERT INTO account(name, pw, userid, isAdmin)VALUES('${req.body.id}', '${sha256(req.body.pw)}', '${rand}', ${req.body.isAdmin})`);
                             return res.status(200).json({
                                 result: "success"
