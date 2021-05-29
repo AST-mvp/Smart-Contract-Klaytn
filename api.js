@@ -137,7 +137,7 @@ app.post('/users/register', function (req, res) {
                 return res.status(400).json({
                     result: "sql error"
                 });
-            if (rows.isAdmin){
+            if (rows.isAdmin) {
                 try {
                     const sql = `SELECT EXISTS (select * from account where name = '${req.body.id}') as success;`;
                     db.get(sql, [], (err, rows2) => {
@@ -417,6 +417,38 @@ app.get('/closet', function (req, res) {
                 }
             }
         });
+    }
+    catch (e) {
+        return res.status(401).json({
+            message: "login required"
+        });
+    }
+});
+
+app.get('/drops', function (req, res) {
+    try {
+        if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]) {
+            Ast.allProductInfo().then(result => {
+                var products = new Array();
+                for (var i = 0; i < result.length; i++)
+                    products.push({
+                        "nfcID": result[i][0],
+                        "brandID": result[i][1],
+                        "productID": result[i][2],
+                        "editionID": result[i][3],
+                        "manufactureDate": result[i][4],
+                        "limited": result[i][5],
+                        "ownerID": result[i][6]
+                    });
+                return res.status(200).json({
+                    result: products
+                })
+            });
+        }
+        else
+            return res.status(404).json({
+                result: "invalid user"
+            })
     }
     catch (e) {
         return res.status(401).json({
