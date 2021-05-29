@@ -1,7 +1,6 @@
 const Caver = require('caver-js')
 const ethers = require('ethers')
 const toBytes32 = ethers.utils.formatBytes32String
-const toString = ethers.utils.parseBytes32String
 const caver = new Caver('https://api.baobab.klaytn.net:8651/')
 
 const abi = [{"constant": true,"inputs": [],"name": "owner","outputs": [{"internalType": "address","name": "","type": "address"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"name": "registerProductInfo","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "allProductInfo","outputs": [{"components": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"internalType": "struct Ast.ProductInfo[]","name": "","type": "tuple[]"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "_number","type": "uint256"},{"internalType": "uint256","name": "new_ownerId","type": "uint256"}],"name": "changeOwnership","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"}]
@@ -59,6 +58,10 @@ async function nfcIDcheck(nfcID) {
     })
 }
 
+function to_String(hex) {
+    return ethers.utils.parseBytes32String(hex)
+}
+
 // async function myProductCheck(nfcID, userID) {
 //     return allProductInfo().then(result => {
 //         for (var i = 0; i < result.length; i++) {
@@ -74,7 +77,7 @@ module.exports = {
     allProductInfo: allProductInfo,
     changeOwnership: changeOwnership,
     nfcIDcheck: nfcIDcheck,
-    toString: toString
+    to_String: to_String
 }
 
 // -- Please don't erase it. --

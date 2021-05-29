@@ -199,10 +199,10 @@ app.get('/products', function (req, res) {
                 for (i = 0; i < result.length; i++) {
                     products.push({
                         "nfcID": result[i][0],
-                        "brandID": Ast.toString(result[i][1]),
-                        "productID": Ast.toString(result[i][2]),
-                        "editionID": Ast.toString(result[i][3]),
-                        "manufactureDate": Ast.toString(result[i][4]),
+                        "brandID": Ast.to_String(result[i][1]),
+                        "productID": Ast.to_String(result[i][2]),
+                        "editionID": Ast.to_String(result[i][3]),
+                        "manufactureDate": Ast.to_String(result[i][4]),
                         "limited": result[i][5],
                         "drop": result[i][6],
                         "ownerID": result[i][7]
@@ -278,10 +278,10 @@ app.get('/products/:nfcid', function (req, res) {
                         return res.status(200).json({
                             products: {
                                 "nfcID": result[i][0],
-                                "brandID": result[i][1],
-                                "productID": result[i][2],
-                                "editionID": result[i][3],
-                                "manufactureDate": result[i][4],
+                                "brandID": Ast.to_String(result[i][1]),
+                                "productID": Ast.to_String(result[i][2]),
+                                "editionID": Ast.to_String(result[i][3]),
+                                "manufactureDate": Ast.to_String(result[i][4]),
                                 "limited": result[i][5],
                                 "drop": result[i][6],
                                 "ownerID": result[i][7]
@@ -395,10 +395,10 @@ app.get('/closet', function (req, res) {
                                     console.log(rows.userid, result[i]);
                                     products.push({
                                         "nfcID": result[i][0],
-                                        "brandID": result[i][1],
-                                        "productID": result[i][2],
-                                        "editionID": result[i][3],
-                                        "manufactureDate": result[i][4],
+                                        "brandID": Ast.to_String(result[i][1]),
+                                        "productID": Ast.to_String(result[i][2]),
+                                        "editionID": Ast.to_String(result[i][3]),
+                                        "manufactureDate": Ast.to_String(result[i][4]),
                                         "limited": result[i][5],
                                         "drop": result[i][6],
                                         "ownerID": result[i][7]
@@ -438,10 +438,10 @@ app.get('/drops', function (req, res) {
                     if (result[i][6])
                         products.push({
                             "nfcID": result[i][0],
-                            "brandID": result[i][1],
-                            "productID": result[i][2],
-                            "editionID": result[i][3],
-                            "manufactureDate": result[i][4],
+                            "brandID": Ast.to_String(result[i][1]),
+                            "productID": Ast.to_String(result[i][2]),
+                            "editionID": Ast.to_String(result[i][3]),
+                            "manufactureDate": Ast.to_String(result[i][4]),
                             "limited": result[i][5],
                             "drop": result[i][6],
                             "ownerID": result[i][7]
