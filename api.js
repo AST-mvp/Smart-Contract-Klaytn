@@ -199,12 +199,13 @@ app.get('/products', function (req, res) {
                 for (i = 0; i < result.length; i++) {
                     products.push({
                         "nfcID": result[i][0],
-                        "brandID": result[i][1],
-                        "productID": result[i][2],
-                        "editionID": result[i][3],
-                        "manufactureDate": result[i][4],
+                        "brandID": Ast.toString(result[i][1]),
+                        "productID": Ast.toString(result[i][2]),
+                        "editionID": Ast.toString(result[i][3]),
+                        "manufactureDate": Ast.toString(result[i][4]),
                         "limited": result[i][5],
-                        "ownerID": result[i][6]
+                        "drop": result[i][6],
+                        "ownerID": result[i][7]
                     });
                 }
                 return res.status(200).json({
@@ -243,7 +244,7 @@ app.post("/products", function (req, res) {
                     }
                     else {
                         db.run(`INSERT INTO product(brandname, productname, editionname)VALUES('${req.body.brandID}', '${req.body.productID}', '${req.body.editionID}')`);
-                        Ast.registerProductInfo(req.body.nfcID, rows.seq, rows.seq, rows.seq, req.body.manufactureDate, req.body.limited, req.body.ownerID).then(result => {
+                        Ast.registerProductInfo(req.body.nfcID, req.body.brandID, req.body.productID, req.body.editionID, req.body.manufactureDate, req.body.limited, req.body.drop, req.body.ownerID).then(result => {
                             if (result)
                                 return res.status(200).json({
                                     result: "success"
@@ -282,9 +283,10 @@ app.get('/products/:nfcid', function (req, res) {
                                 "editionID": result[i][3],
                                 "manufactureDate": result[i][4],
                                 "limited": result[i][5],
-                                "ownerID": result[i][6]
+                                "drop": result[i][6],
+                                "ownerID": result[i][7]
                             }
-                        })
+                        });
                 return res.status(404).json({
                     result: "invalid nfcID"
                 });
@@ -398,12 +400,13 @@ app.get('/closet', function (req, res) {
                                         "editionID": result[i][3],
                                         "manufactureDate": result[i][4],
                                         "limited": result[i][5],
-                                        "ownerID": result[i][6]
+                                        "drop": result[i][6],
+                                        "ownerID": result[i][7]
                                     });
                                 }
                             }
                             return res.status(200).json({
-                                result: products
+                                products: products
                             })
                         });
                     }
@@ -430,18 +433,35 @@ app.get('/drops', function (req, res) {
         if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]) {
             Ast.allProductInfo().then(result => {
                 var products = new Array();
-                for (var i = 0; i < result.length; i++)
-                    products.push({
-                        "nfcID": result[i][0],
-                        "brandID": result[i][1],
-                        "productID": result[i][2],
-                        "editionID": result[i][3],
-                        "manufactureDate": result[i][4],
-                        "limited": result[i][5],
-                        "ownerID": result[i][6]
-                    });
+                for (var i = 0; i < result.length; i++) {
+                    //try {
+                    if (result[i][6])
+                        products.push({
+                            "nfcID": result[i][0],
+                            "brandID": result[i][1],
+                            "productID": result[i][2],
+                            "editionID": result[i][3],
+                            "manufactureDate": result[i][4],
+                            "limited": result[i][5],
+                            "drop": result[i][6],
+                            "ownerID": result[i][7]
+                        });
+                    //}
+                    // catch (e) {
+                    //     products.push({
+                    //         "nfcID": result[i][0],
+                    //         "brandID": result[i][1],
+                    //         "productID": result[i][2],
+                    //         "editionID": result[i][3],
+                    //         "manufactureDate": result[i][4],
+                    //         "limited": result[i][5],
+                    //         "drop": 0,
+                    //         "ownerID": result[i][7]
+                    //     });
+                    // }
+                }
                 return res.status(200).json({
-                    result: products
+                    products: products
                 })
             });
         }

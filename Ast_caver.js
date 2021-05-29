@@ -1,7 +1,10 @@
 const Caver = require('caver-js')
+const ethers = require('ethers')
+const toBytes32 = ethers.utils.formatBytes32String
+const toString = ethers.utils.parseBytes32String
 const caver = new Caver('https://api.baobab.klaytn.net:8651/')
 
-const abi = [{"constant": true,"inputs": [],"name": "owner","outputs": [{"internalType": "address","name": "","type": "address"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "uint256","name": "brandId","type": "uint256"},{"internalType": "uint256","name": "productId","type": "uint256"},{"internalType": "uint256","name": "editionId","type": "uint256"},{"internalType": "string","name": "manufactureDate","type": "string"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"name": "registerProductInfo","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "allProductInfo","outputs": [{"components": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "uint256","name": "brandId","type": "uint256"},{"internalType": "uint256","name": "productId","type": "uint256"},{"internalType": "uint256","name": "editionId","type": "uint256"},{"internalType": "string","name": "manufactureDate","type": "string"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"internalType": "struct Ast.ProductInfo[]","name": "","type": "tuple[]"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "_number","type": "uint256"},{"internalType": "uint256","name": "new_ownerId","type": "uint256"}],"name": "changeOwnership","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"}]
+const abi = [{"constant": true,"inputs": [],"name": "owner","outputs": [{"internalType": "address","name": "","type": "address"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"name": "registerProductInfo","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "allProductInfo","outputs": [{"components": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"internalType": "struct Ast.ProductInfo[]","name": "","type": "tuple[]"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "_number","type": "uint256"},{"internalType": "uint256","name": "new_ownerId","type": "uint256"}],"name": "changeOwnership","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"}]
 const Ast = new caver.contract(abi, "0x61D074c849140D53457A0f8b250CfAfF7361BADE")
 const account = caver.wallet.keyring.create("0xdd6e0b6d3c71c0a43a6ea2cedf91e1e48e194ea6", "0x9bd8e94d3edc022a6d2b5d3e2fb6b55e1d300c72748dfb99db451cd885315373")
 caver.wallet.add(account)
@@ -13,7 +16,7 @@ async function registerProductInfo(nfcID, brandID, productID, editionID, manufac
                 return false
             }
         }
-        Ast.methods.registerProductInfo(nfcID, brandID, productID, editionID, manufactureDate, limited, appeared, ownerID).send({
+        Ast.methods.registerProductInfo(nfcID, toBytes32(brandID), toBytes32(productID), toBytes32(editionID), toBytes32(manufactureDate), limited, appeared, ownerID).send({
             from: account.address,
             gas: 250000
         }).then(function(message) {
@@ -29,7 +32,7 @@ async function allProductInfo() {
 }
 
 async function changeOwnership(nfcID, new_ownerId) {
-    return allProductInfo().then(result => {
+    return allProductInfo().then(result =>{
         for (var i = 0; i < result.length; i++) {
             if (result[i][0] == nfcID) {
                 Ast.methods.changeOwnership(i, new_ownerId).send({
@@ -70,7 +73,8 @@ module.exports = {
     registerProductInfo: registerProductInfo,
     allProductInfo: allProductInfo,
     changeOwnership: changeOwnership,
-    nfcIDcheck: nfcIDcheck
+    nfcIDcheck: nfcIDcheck,
+    toString: toString
 }
 
 // -- Please don't erase it. --
