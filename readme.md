@@ -253,9 +253,9 @@ Authorization|`Bearer <token>`|
 }
 ```
 
-## GET `/drops`
+## GET `/drops?type=ongoing|finished`
 
-Returns dropped products
+Returns dropped/drop finished products
 
 header|value
 |--|--|
