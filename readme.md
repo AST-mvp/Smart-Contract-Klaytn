@@ -119,7 +119,7 @@ Authorization|`Bearer <token>`|
 ```json
 // response
 {
-    result: "success"
+    "result": "success"
 }
 ```
 
@@ -178,8 +178,7 @@ Authorization|`Bearer <token>`|
 ```json
 // response
 {
-    result: "nfcID already exists"
-    result: "success",
+    "result": "success",
 }
 ```
 
@@ -226,7 +225,7 @@ Authorization|`Bearer <token>`|
 ```json
 // response
 {
-    result: "success"
+    "result": "success"
 }
 ```
 
