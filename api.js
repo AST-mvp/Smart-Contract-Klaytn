@@ -433,9 +433,24 @@ app.get('/drops', function (req, res) {
         if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]) {
             Ast.allProductInfo().then(result => {
                 var products = new Array();
+                if (!(req.query.type))
+                    return res.status(404).json({
+                        result: "no type query"
+                    })
                 for (var i = 0; i < result.length; i++) {
                     //try {
-                    if (result[i][6])
+                    if (result[i][6] && req.query.type == "ongoing")
+                        products.push({
+                            "nfcID": result[i][0],
+                            "brandID": Ast.to_String(result[i][1]),
+                            "productID": Ast.to_String(result[i][2]),
+                            "editionID": Ast.to_String(result[i][3]),
+                            "manufactureDate": Ast.to_String(result[i][4]),
+                            "limited": result[i][5],
+                            "drop": result[i][6],
+                            "ownerID": result[i][7]
+                        });
+                    else if (!(result[i][6]) && req.query.type == "finished")
                         products.push({
                             "nfcID": result[i][0],
                             "brandID": Ast.to_String(result[i][1]),
