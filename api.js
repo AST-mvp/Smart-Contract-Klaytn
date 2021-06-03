@@ -14,6 +14,7 @@ const http = require("http");
 const logger = require("morgan");
 const Ast = require("./Ast_caver");
 const { json } = require("body-parser");
+const moment = require("moment-timezone")
 // const { swaggerUi, specs } = require("./swagger/swagger");
 
 const PORT = process.env.PORT || 80;
@@ -26,6 +27,13 @@ const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err)
 });
 
 require("dotenv").config();
+
+moment.tz.setDefault('Asia/Seoul');
+
+logger.token('date', (req, res, tz) => {
+    return moment().tz(tz).format();
+})
+logger.format('myformat', '[:Asia/Seoul]] ":method :url" :status :res[content-length] - :response-time ms');
 
 app.use(logger('common', {
     stream: fs.createWriteStream('./log/console.log', { flags: 'a' })
@@ -544,7 +552,7 @@ app.post('/auth/oauth/google', function (req, res) {
     }
 });
 
-app.get("*", function(req, res){
+app.get("*", function (req, res) {
     return res.status(404).json({
         message: `404 not found`
     });
