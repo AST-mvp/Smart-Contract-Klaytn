@@ -14,6 +14,7 @@ const http = require("http");
 const logger = require("morgan");
 const Ast = require("./Ast_caver");
 const { json } = require("body-parser");
+// const { swaggerUi, specs } = require("./swagger/swagger");
 
 const PORT = process.env.PORT || 80;
 const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err) => {
@@ -33,6 +34,7 @@ app.use(logger('dev'));
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
@@ -542,6 +544,12 @@ app.post('/auth/oauth/google', function (req, res) {
             result: "err"
         });
     }
+});
+
+app.get("*", function(req, res){
+    return res.status(404).json({
+        message: `404 not found`
+    });
 });
 
 // app.listen(PORT, function () {
