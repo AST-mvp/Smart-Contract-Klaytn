@@ -391,7 +391,7 @@ app.get('/closet', function (req, res) {
                         Ast.allProductInfo().then(result => {
                             var products = new Array();
                             for (var i = 0; i < result.length; i++) {
-                                if (rows.userid == result[i][6]) {
+                                if (rows.userid == result[i][7]) {
                                     console.log(rows.userid, result[i]);
                                     products.push({
                                         "nfcID": result[i][0],
