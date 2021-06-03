@@ -276,3 +276,12 @@ Authorization|`Bearer <token>`|
     }
 }
 ```
+
+## GET `*`
+
+```json
+// response
+{
+    "message": "404 not found"
+}
+```
