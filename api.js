@@ -46,9 +46,7 @@ app.use(session({
 app.use(express.json());
 
 app.get('/', function (req, res) {
-    return res.status(200).json({
-        message: "hello world!"
-    });
+    res.render("index")
 });
 
 app.post('/login', function (req, res) {

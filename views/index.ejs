@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome file</title>
+    <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+    <div class="stackedit__left">
+        <div class="stackedit__toc">
+
+            <ul>
+                <li><a href="#smart-contract-klaytn">Smart-Contract-Klaytn</a>
+                    <ul>
+                        <li><a href="#post-login">POST /login</a></li>
+                        <li><a href="#post-authoauthkakao">POST /auth/oauth/kakao</a></li>
+                        <li><a href="#post-authoauthgoogle">POST /auth/oauth/google</a></li>
+                        <li><a href="#get-login">GET /login</a></li>
+                        <li><a href="#get-usersme">GET /users/me</a></li>
+                        <li><a href="#post-usersregister">POST /users/register</a></li>
+                        <li><a href="#get-products">GET /products</a></li>
+                        <li><a href="#post-products">POST /products</a></li>
+                        <li><a href="#get-productsnfcid">GET /products/:nfcid</a></li>
+                        <li><a href="#post-productstrade">POST /products/trade</a></li>
+                        <li><a href="#get-closet">GET /closet</a></li>
+                        <li><a href="#get-dropstypeongoingfinished">GET /drops?type=ongoing|finished</a></li>
+                        <li><a href="#get-">GET *</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="stackedit__right">
+        <div class="stackedit__html">
+            <h1 id="smart-contract-klaytn">Smart-Contract-Klaytn</h1>
+            <h2 id="post-login">POST <code>/login</code></h2>
+            <p>Login to our system</p>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"pw"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+    <span class="token string">"access_token"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h3 id="account.db">account.db</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>pw</th>
+                        <th>userid</th>
+                        <th>isAdmin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>admin</td>
+                        <td><code>sha256("admin")</code></td>
+                        <td>2001</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>test1</td>
+                        <td><code>sha256("1111")</code></td>
+                        <td>2002</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>test2</td>
+                        <td><code>sha256("2222")</code></td>
+                        <td>2003</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>test3</td>
+                        <td><code>sha256("3333")</code></td>
+                        <td>2004</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>test4</td>
+                        <td><code>sha256("4444")</code></td>
+                        <td>2005</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>test5</td>
+                        <td><code>sha256("5555")</code></td>
+                        <td>5026</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 id="post-authoauthkakao">POST <code>/auth/oauth/kakao</code></h2>
+            <p>OAuth 2.0 social login (kakao)</p>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"accessToken"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+    <span class="token string">"token"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="post-authoauthgoogle">POST <code>/auth/oauth/google</code></h2>
+            <p>OAuth 2.0 social login (google)</p>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"accessToken"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+    <span class="token string">"token"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-login">GET <code>/login</code></h2>
+            <p>Check login status</p>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-usersme">GET <code>/users/me</code></h2>
+            <p>Returns my profile info</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"userID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"isAdmin"</span><span class="token punctuation">:</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="post-usersregister">POST <code>/users/register</code></h2>
+            <p>Register new user</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul>
+                <li>requires admin previlege</li>
+            </ul>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"pw"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"isAdmin"</span><span class="token punctuation">:</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-products">GET <code>/products</code></h2>
+            <p>Returns all products registered in blockchain network for admin</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul>
+                <li>requires admin previlege</li>
+            </ul>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"products"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token string">"nfcID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+            <span class="token string">"brandID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+            <span class="token string">"productID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+            <span class="token string">"editionID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+            <span class="token string">"manufactureDate"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+            <span class="token string">"limited"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+            <span class="token string">"drop"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+            <span class="token string">"ownerID"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="post-products">POST <code>/products</code></h2>
+            <p>Register new product</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul>
+                <li>requires admin previlege</li>
+            </ul>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"nfcID"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+    <span class="token string">"brandID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"productID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"editionID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"manufactureDate"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token string">"limited"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+    <span class="token string">"drop"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+    <span class="token string">"ownerID"</span><span class="token punctuation">:</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-productsnfcid">GET <code>/products/:nfcid</code></h2>
+            <p>Search my product by nfcID value</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"products"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"nfcID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"brandID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"productID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"editionID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"manufactureDate"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"limited"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"drop"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"ownerID"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="post-productstrade">POST <code>/products/trade</code></h2>
+            <p>Trade my product to someone else</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// payload</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"nfcID"</span> <span class="token punctuation">:</span> <span class="token punctuation">,</span>
+    <span class="token string">"userID"</span><span class="token punctuation">:</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"result"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-closet">GET <code>/closet</code></h2>
+            <p>Returns my products</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"products"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"nfcID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"brandID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"productID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"editionID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"manufactureDate"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"limited"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"drop"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"ownerID"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-dropstypeongoingfinished">GET <code>/drops?type=ongoing|finished</code></h2>
+            <p>Returns dropped/drop finished products</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>header</th>
+                        <th>value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Authorization</td>
+                        <td><code>Bearer &lt;token&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+    <span class="token string">"products"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        <span class="token string">"nfcID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"brandID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"productID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"editionID"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"manufactureDate"</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+        <span class="token string">"limited"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"drop"</span><span class="token punctuation">:</span> <span class="token punctuation">,</span>
+        <span class="token string">"ownerID"</span><span class="token punctuation">:</span> <span class="token string">""</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+            <h2 id="get-">GET <code>*</code></h2>
+            <pre class=" language-json"><code class="prism  language-json"><span class="token comment">// response</span>
+<span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span>  <span class="token string">"404 not found"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+        </div>
+    </div>
+</body>
+
+</html>
