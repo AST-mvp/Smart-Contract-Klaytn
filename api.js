@@ -57,6 +57,12 @@ app.get('/', function (req, res) {
     res.render("index")
 });
 
+app.all('/', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.post('/login', function (req, res) {
     const sql = `SELECT pw FROM account WHERE name = '${req.body.id}'`;
     db.get(sql, [], (err, rows) => {
@@ -102,6 +108,12 @@ app.get('/login', function (req, res) {
     }
 });
 
+app.all('/login', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.get('/users/me', function (req, res) {
     try {
         var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
@@ -134,6 +146,12 @@ app.get('/users/me', function (req, res) {
                 console.log("invalid user");
             }
         }
+    });
+});
+
+app.all('/users/me', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
     });
 });
 
@@ -185,6 +203,12 @@ app.post('/users/register', function (req, res) {
             result: "login required"
         })
     }
+});
+
+app.all('/users/register', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
 });
 
 app.get('/products', function (req, res) {
@@ -277,6 +301,12 @@ app.post("/products", function (req, res) {
     });
 });
 
+app.all('/products', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.get('/products/:nfcid', function (req, res) {
     try {
         if (jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]) {
@@ -306,6 +336,12 @@ app.get('/products/:nfcid', function (req, res) {
             result: "login required"
         })
     }
+});
+
+app.all('/products/:nfcid', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
 });
 
 app.post('/products/trade', function (req, res) {
@@ -382,6 +418,12 @@ app.post('/products/trade', function (req, res) {
     }
 });
 
+app.all('/products/trade', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.get('/closet', function (req, res) {
     try {
         let user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]
@@ -434,6 +476,12 @@ app.get('/closet', function (req, res) {
             message: "login required"
         });
     }
+});
+
+app.all('/closet', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
 });
 
 app.get('/drops', function (req, res) {
@@ -500,6 +548,12 @@ app.get('/drops', function (req, res) {
     }
 });
 
+app.all('/drops', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.post('/auth/oauth/kakao', function (req, res) {
     try {
         let access_token = req.body.accessToken;
@@ -524,6 +578,12 @@ app.post('/auth/oauth/kakao', function (req, res) {
             result: "err"
         });
     }
+});
+
+app.all('/auth/oauth/kakao', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
 });
 
 app.post('/auth/oauth/google', function (req, res) {
@@ -552,9 +612,21 @@ app.post('/auth/oauth/google', function (req, res) {
     }
 });
 
+app.all('/auth/oauth/google', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
 app.get("*", function (req, res) {
     return res.status(404).json({
         message: `404 not found`
+    });
+});
+
+app.all('*', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
     });
 });
 
