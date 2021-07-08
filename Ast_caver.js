@@ -79,8 +79,3 @@ module.exports = {
     nfcIDcheck: nfcIDcheck,
     to_String: to_String
 }
-
-// -- Please don't erase it. --
-// registerProductInfo(0911,2,3,4,"21-05-17",true,2345)
-// allProductInfo().then(result =>  { console.log(result) } )
-// changeOwnership(911, 911)

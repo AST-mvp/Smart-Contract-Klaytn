@@ -17,7 +17,7 @@ const { json } = require("body-parser");
 const moment = require("moment-timezone")
 // const { swaggerUi, specs } = require("./swagger/swagger");
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 5000;
 const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.log(err);
@@ -347,11 +347,10 @@ app.all('/products/:nfcid', (req, res, next) => {
 app.post('/products/trade', function (req, res) {
     try {
         db.get(`SELECT userid FROM account WHERE name = '${jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"]}'`, [], (err, rows) => {
-            if (err) {
+            if (err)
                 return res.status(400).json({
                     result: "sql error"
                 });
-            }
             else {
                 if (rows.userid) {
                     var userID = rows.userid;
@@ -630,15 +629,15 @@ app.all('*', (req, res, next) => {
     });
 });
 
-// app.listen(PORT, function () {
-//     console.log(`Connected port ${PORT}`);
-// });
+app.listen(PORT, function () {
+    console.log(`Connected port ${PORT}`);
+});
 
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/fullchain.pem')
-};
+// const options = {
+//     key: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/cert.pem'),
+//     ca: fs.readFileSync('/etc/letsencrypt/live/d0hwq1.xyz/fullchain.pem')
+// };
 
-const server_80 = http.createServer(app).listen(80);
-const server_443 = https.createServer(options, app).listen(443);
+// const server_80 = http.createServer(app).listen(80);
+// const server_443 = https.createServer(options, app).listen(443);
