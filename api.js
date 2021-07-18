@@ -15,6 +15,7 @@ const logger = require("morgan");
 const Ast = require("./Ast_caver");
 const { json } = require("body-parser");
 const moment = require("moment-timezone")
+const multer = require('multer');
 // const { swaggerUi, specs } = require("./swagger/swagger");
 
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,14 @@ const db = new sqlite3.Database("./db/account.db", sqlite3.OPEN_READWRITE, (err)
         console.log(err);
     } else {
         console.log('account.db connected');
+    }
+});
+
+const drop_db = new sqlite3.Database("./db/drop.db", sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('drop.db connected');
     }
 });
 
@@ -52,6 +61,16 @@ app.use(session({
 }));
 
 app.use(express.json());
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname) //Retains the original file name
+    }
+})
+const upload = multer({ storage: storage })
 
 app.get('/', function (req, res) {
     res.render("index")
@@ -251,7 +270,7 @@ app.get('/products', function (req, res) {
     });
 });
 
-app.post("/products", function (req, res) {
+app.post("/products", upload.single('userfile'), function (req, res) {
     try {
         var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
     }
@@ -260,6 +279,7 @@ app.post("/products", function (req, res) {
             result: "login required"
         })
     }
+    console.log(req.file);
     db.get(`SELECT isAdmin FROM account WHERE "name" = '${user}'`, [], (err, rows) => {
         if (err)
             return res.status(400).json({
@@ -276,6 +296,7 @@ app.post("/products", function (req, res) {
                     }
                     else {
                         db.run(`INSERT INTO product(brandname, productname, editionname)VALUES('${req.body.brandID}', '${req.body.productID}', '${req.body.editionID}')`);
+                        // drop_db.run(`INSERT INTO drop (nfcID, dropTime, imageName) VALUES(${req.body.nfcID}, '${req.body.dropTime}', ${req.file.filename})`);
                         Ast.registerProductInfo(req.body.nfcID, req.body.brandID, req.body.productID, req.body.editionID, req.body.manufactureDate, req.body.limited, req.body.drop, req.body.ownerID).then(result => {
                             if (result)
                                 return res.status(200).json({
@@ -612,6 +633,30 @@ app.post('/auth/oauth/google', function (req, res) {
 });
 
 app.all('/auth/oauth/google', (req, res, next) => {
+    return res.status(405).json({
+        result: "method not allowed"
+    });
+});
+
+app.post('/upload', upload.single('userfile'), function (req, res) {
+    //res.send('Uploaded! : ' + req.file);
+    console.log(req.file);
+    db.get(`SELECT * FROM drop WHERE nfcID = '${user}'`, [], (err, rows) => {
+        if (err)
+            return res.status(400).json({
+                result: "sql error"
+            });
+        if (rows.isAdmin){
+
+        }
+        else
+            return res.status(403).json({
+                result: "admin required"
+            })
+    });
+});
+
+app.all('/upload', (req, res, next) => {
     return res.status(405).json({
         result: "method not allowed"
     });

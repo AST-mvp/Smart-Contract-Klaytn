@@ -19,6 +19,7 @@ async function registerProductInfo(nfcID, brandID, productID, editionID, manufac
             from: account.address,
             gas: 250000
         }).then(function(message) {
+            console.log(nfcID, toBytes32(brandID), toBytes32(productID), toBytes32(editionID), toBytes32(manufactureDate), limited, appeared, ownerID)
             console.log(message)
         })
         return true
@@ -79,3 +80,4 @@ module.exports = {
     nfcIDcheck: nfcIDcheck,
     to_String: to_String
 }
+registerProductInfo(12345,'1','2','3',"21-07-12", false, false, 4321)
