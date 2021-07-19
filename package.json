@@ -3,46 +3,38 @@
   "version": "1.0.0",
   "description": "## POST `/login`",
   "main": "Ast_caver.js",
-  "dependencies": {
-    "@openzeppelin/upgrades": "^2.8.0",
-    "body-parser": "^1.19.0",
-    "caver-js": "^1.6.2",
-    "ejs": "^3.1.6",
-    "env": "^0.0.2",
-    "ethers": "^5.3.1",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
-    "https": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "moment-timezone": "^0.5.33",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.2",
-    "node-gyp-build": "^4.2.3",
-    "request": "^2.88.2",
-    "sha256": "^0.2.0",
-    "sqlite3": "^5.0.2",
-    "swagger-jsdoc": "^7.0.0-rc.6",
-    "swagger-ui-express": "^4.1.6",
-    "truffle-hdwallet-provider-klaytn": "^1.0.13-a",
-    "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5",
-    "zos-lib": "^2.4.3"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "mocha"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://D0hwQ1@github.com/AST-mvp/Smart-Contract-Klaytn.git"
+    "url": "git+https://github.com/AST-mvp/Smart-Contract-Klaytn.git"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AST-mvp/Smart-Contract-Klaytn/issues"
   },
-  "homepage": "https://github.com/AST-mvp/Smart-Contract-Klaytn#readme"
+  "homepage": "https://github.com/AST-mvp/Smart-Contract-Klaytn#readme",
+  "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.2.0",
+    "@truffle/hdwallet-provider": "^1.4.1",
+    "ajv": "^6.12.6",
+    "body-parser": "^1.19.0",
+    "caver-js": "^1.6.3",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment-timezone": "^0.5.33",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "request": "^2.87.0",
+    "requestretry": "^2.0.2",
+    "sha256": "^0.2.0",
+    "sqlite3": "^5.0.2",
+    "web3": "^1.4.0"
+  }
 }
