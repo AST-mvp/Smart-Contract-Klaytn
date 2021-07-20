@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AST-mvp/Smart-Contract-Klaytn#readme",
   "dependencies": {
+    "@klaytn/contracts": "^0.9.0",
     "@openzeppelin/contracts-upgradeable": "^4.2.0",
     "@truffle/hdwallet-provider": "^1.4.1",
     "ajv": "^6.12.6",
