@@ -3,10 +3,13 @@ const ethers = require('ethers')
 const toBytes32 = ethers.utils.formatBytes32String
 const caver = new Caver('https://api.baobab.klaytn.net:8651/')
 
-const abi = [{"constant": true,"inputs": [],"name": "owner","outputs": [{"internalType": "address","name": "","type": "address"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"name": "registerProductInfo","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [],"name": "allProductInfo","outputs": [{"components": [{"internalType": "uint256","name": "nfcId","type": "uint256"},{"internalType": "bytes32","name": "brandId","type": "bytes32"},{"internalType": "bytes32","name": "productId","type": "bytes32"},{"internalType": "bytes32","name": "editionId","type": "bytes32"},{"internalType": "bytes32","name": "manufactureDate","type": "bytes32"},{"internalType": "bool","name": "isLimited","type": "bool"},{"internalType": "bool","name": "isAppeared","type": "bool"},{"internalType": "uint256","name": "ownerId","type": "uint256"}],"internalType": "struct Ast.ProductInfo[]","name": "","type": "tuple[]"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"internalType": "uint256","name": "_number","type": "uint256"},{"internalType": "uint256","name": "new_ownerId","type": "uint256"}],"name": "changeOwnership","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"}]
-const Ast = new caver.contract(abi, "0x61D074c849140D53457A0f8b250CfAfF7361BADE")
 const account = caver.wallet.keyring.create("0xdd6e0b6d3c71c0a43a6ea2cedf91e1e48e194ea6", "0x9bd8e94d3edc022a6d2b5d3e2fb6b55e1d300c72748dfb99db451cd885315373")
 caver.wallet.add(account)
+
+const abi =  require('./build/contracts/Logic.json').abi
+const cont_addr = require('./build/contracts/Logic.json').networks[1001].address
+const Ast = new caver.contract(abi, cont_addr)
+
 
 async function registerProductInfo(nfcID, brandID, productID, editionID, manufactureDate, limited, appeared, ownerID) {
     return allProductInfo().then(result => {
@@ -28,6 +31,7 @@ async function registerProductInfo(nfcID, brandID, productID, editionID, manufac
 
 async function allProductInfo() {
     var result = await Ast.methods.allProductInfo().call()
+    console.log(result)
     return result
 }
 
@@ -63,16 +67,6 @@ function to_String(hex) {
     return ethers.utils.parseBytes32String(hex)
 }
 
-// async function myProductCheck(nfcID, userID) {
-//     return allProductInfo().then(result => {
-//         for (var i = 0; i < result.length; i++) {
-//             if (result[i][0] == nfcID){
-//                 if (result[i][6])
-//             }
-//         }
-//     })
-// }
-
 module.exports = {
     registerProductInfo: registerProductInfo,
     allProductInfo: allProductInfo,
@@ -80,4 +74,5 @@ module.exports = {
     nfcIDcheck: nfcIDcheck,
     to_String: to_String
 }
-registerProductInfo(12345,'1','2','3',"21-07-12", false, false, 4321)
+// registerProductInfo(123456,'1','2','3',"21-07-12", false, false, 4321)
+// allProductInfo()
