@@ -44,9 +44,9 @@ logger.token('date', (req, res, tz) => {
 })
 logger.format('myformat', '[:Asia/Seoul]] ":method :url" :status :res[content-length] - :response-time ms');
 
-app.use(logger('common', {
-    stream: fs.createWriteStream('./log/console.log', { flags: 'a' })
-}));
+// app.use(logger('common', {
+//     stream: fs.createWriteStream('./log/console.log', { flags: 'a' })
+// }));
 app.use(logger('dev'));
 
 app.set('view engine', 'ejs');
