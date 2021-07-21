@@ -2,10 +2,9 @@
 pragma solidity >=0.4.22 <0.9.0;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/upgrades/contracts/Initializable.sol";
-import "zos-lib/contracts/migrations/Migratable.sol";
+import "@klaytn/contracts/token/KIP17/KIP17.sol";
 
-contract Logic is Initializable {
+contract Logic is KIP17 {
     
     struct ProductInfo {
     uint256 nfcId;
@@ -19,18 +18,14 @@ contract Logic is Initializable {
     }
 
     ProductInfo[] products;
+    address public owner;
 
-    function initialize() public initializer {
-        require(!initialized);
-        initialized = true;
+    constructor() public {
+        owner  = msg.sender;
+    }   
 
-    }
-
-    modifier onlyOwner() {
-        require(
-            msg.sender == owner,
-            "This function is restricted to the contract's owner"
-        );
+    modifier isOwner() {
+        require(owner == msg.sender);
         _;
     }
 
@@ -43,10 +38,12 @@ contract Logic is Initializable {
         bool isLimited,
         bool isAppeared,
         uint256 ownerId
-    ) public onlyOwner() {
+    ) public isOwner() {
+        uint256 tokenId = products.length;
         products.push(
             ProductInfo(nfcId, brandId, productId, editionId, manufactureDate, isLimited, isAppeared, ownerId)
         );
+        _mint(msg.sender, tokenId);
     }
 
     function allProductInfo() public view returns(ProductInfo[] memory) {
@@ -56,7 +53,8 @@ contract Logic is Initializable {
     function changeOwnership(
         uint256 _number,
         uint256 new_ownerId
-    ) public onlyOwner() {
+    ) public isOwner() {
         products[_number].ownerId = new_ownerId;
     }
+
 }
