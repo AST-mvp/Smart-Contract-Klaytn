@@ -16,6 +16,8 @@ const Ast = require("./Ast_caver");
 const { json } = require("body-parser");
 const moment = require("moment-timezone")
 const multer = require('multer');
+const formidable = require("formidable");
+const exec = require('shelljs.exec')
 // const { swaggerUi, specs } = require("./swagger/swagger");
 
 const PORT = process.env.PORT || 5000;
@@ -67,7 +69,7 @@ var storage = multer.diskStorage({
         cb(null, './uploads')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname) //Retains the original file name
+        cb(null, file.originalname) //file.originalname
     }
 })
 const upload = multer({ storage: storage })
@@ -270,7 +272,7 @@ app.get('/products', function (req, res) {
     });
 });
 
-app.post("/products", upload.single('userfile'), function (req, res) {
+app.post("/products", function (req, res) {
     try {
         var user = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)["name"];
     }
@@ -279,7 +281,6 @@ app.post("/products", upload.single('userfile'), function (req, res) {
             result: "login required"
         })
     }
-    console.log(req.file);
     db.get(`SELECT isAdmin FROM account WHERE "name" = '${user}'`, [], (err, rows) => {
         if (err)
             return res.status(400).json({
@@ -327,6 +328,10 @@ app.all('/products', (req, res, next) => {
         result: "method not allowed"
     });
 });
+
+// app.post("/products/image", function (req, res) {
+
+// })
 
 app.get('/products/:nfcid', function (req, res) {
     try {
@@ -639,21 +644,24 @@ app.all('/auth/oauth/google', (req, res, next) => {
 });
 
 app.post('/upload', upload.single('userfile'), function (req, res) {
-    //res.send('Uploaded! : ' + req.file);
-    console.log(req.file);
-    db.get(`SELECT * FROM drop WHERE nfcID = '${user}'`, [], (err, rows) => {
-        if (err)
-            return res.status(400).json({
-                result: "sql error"
+    console.log(req.file)
+    if (req.file && req.body.nfcID && req.body.description && req.body.dropStart && req.body.dropFinish) {
+        if (req.file.mimetype == "image/jpeg" || req.file.mimetype == "image/jpg" || req.file.mimetype == "image/png") {
+            drop_db.run(`INSERT INTO "drop"(nfcID, description, dropStart, dropFinish)VALUES('${req.body.nfcID}', '${req.body.description}', '${req.body.dropStart}', '${req.body.dropFinish}')`);
+            exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.${req.file.originalname.split(".")[(req.file.originalname.split(".").length)-1]}`, {silent: true});
+            return res.status(200).json({
+                result: `success`
             });
-        if (rows.isAdmin){
-
         }
         else
-            return res.status(403).json({
-                result: "admin required"
-            })
-    });
+            return res.status(400).json({
+                result: `not an image file`
+            });
+    }
+    else
+        return res.status(400).json({
+            result: `err`
+        });
 });
 
 app.all('/upload', (req, res, next) => {
