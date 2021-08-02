@@ -518,6 +518,52 @@ app.get('/drops', function (req, res) {
                     return res.status(404).json({
                         result: "no type query"
                     })
+                // for (var i = 0; i < result.length; i++) {
+                //     drop_db.get(`SELECT * FROM "drop" WHERE nfcID = ${result[i][0]}`, [], (err, rows) => {
+                //         if (err)
+                //             return res.status(400).json({
+                //                 result: "sql error"
+                //             });
+                //         var current_unix_time = Math.floor(new Date().getTime() / 1000);
+                //         // console.log(rows);
+                //         console.log(products)
+                //         try {
+                //             var isDrop = parseInt(rows.dropStart) <= current_unix_time && current_unix_time <= parseInt(rows.dropFinish);
+                //             console.log(isDrop)
+                //             if (isDrop && req.query.type == "ongoing") {
+                //                 products.push({
+                //                     "nfcID": result[i][0],
+                //                     "brandID": Ast.to_String(result[i][1]),
+                //                     "productID": Ast.to_String(result[i][2]),
+                //                     "editionID": Ast.to_String(result[i][3]),
+                //                     "manufactureDate": Ast.to_String(result[i][4]),
+                //                     "limited": result[i][5],
+                //                     "dropStart": rows.dropStart,
+                //                     "dropFinish": rows.dropFinish,
+                //                     "drop": true,
+                //                     "ownerID": result[i][7],
+                //                     "productImage": `./uploads/${result[i][0]}.png`
+                //                 });
+                //             }
+                //             else if (!isDrop && req.query.type == "finished") {
+                //                 products.push({
+                //                     "nfcID": result[i][0],
+                //                     "brandID": Ast.to_String(result[i][1]),
+                //                     "productID": Ast.to_String(result[i][2]),
+                //                     "editionID": Ast.to_String(result[i][3]),
+                //                     "manufactureDate": Ast.to_String(result[i][4]),
+                //                     "limited": result[i][5],
+                //                     "dropStart": rows.dropStart,
+                //                     "dropFinish": rows.dropFinish,
+                //                     "drop": false,
+                //                     "ownerID": result[i][7],
+                //                     "productImage": `./uploads/${result[i][0]}.png`
+                //                 });
+                //             }
+                //         }
+                //         catch (e) { }
+                //     });
+                // }
                 for (var i = 0; i < result.length; i++) {
                     //try {
                     if (result[i][6] && req.query.type == "ongoing")
@@ -542,19 +588,6 @@ app.get('/drops', function (req, res) {
                             "drop": result[i][6],
                             "ownerID": result[i][7]
                         });
-                    //}
-                    // catch (e) {
-                    //     products.push({
-                    //         "nfcID": result[i][0],
-                    //         "brandID": result[i][1],
-                    //         "productID": result[i][2],
-                    //         "editionID": result[i][3],
-                    //         "manufactureDate": result[i][4],
-                    //         "limited": result[i][5],
-                    //         "drop": 0,
-                    //         "ownerID": result[i][7]
-                    //     });
-                    // }
                 }
                 return res.status(200).json({
                     products: products
@@ -648,7 +681,8 @@ app.post('/upload', upload.single('userfile'), function (req, res) {
     if (req.file && req.body.nfcID && req.body.description && req.body.dropStart && req.body.dropFinish) {
         if (req.file.mimetype == "image/jpeg" || req.file.mimetype == "image/jpg" || req.file.mimetype == "image/png") {
             drop_db.run(`INSERT INTO "drop"(nfcID, description, dropStart, dropFinish)VALUES('${req.body.nfcID}', '${req.body.description}', '${req.body.dropStart}', '${req.body.dropFinish}')`);
-            exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.${req.file.originalname.split(".")[(req.file.originalname.split(".").length)-1]}`, {silent: true});
+            // exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.${req.file.originalname.split(".")[(req.file.originalname.split(".").length) - 1]}`, { silent: true });
+            exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.png}`, { silent: true });
             return res.status(200).json({
                 result: `success`
             });
