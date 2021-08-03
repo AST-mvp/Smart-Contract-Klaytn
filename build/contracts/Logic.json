@@ -3668,9 +3668,8 @@
       "transactionHash": "0x4fe2ad48798b247b6640fd282a70fcba0cf6ee83d8be6ed223d9fa9b8c78e106"
     }
   },
-  "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-20T10:32:16.503Z",
-  "networkType": "ethereum",
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-08-03T07:24:10.473Z",
   "devdoc": {
     "methods": {
       "approve(address,uint256)": {

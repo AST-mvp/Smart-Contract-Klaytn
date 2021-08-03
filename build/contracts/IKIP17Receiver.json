@@ -471,8 +471,8 @@
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-20T08:32:37.339Z",
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-08-03T07:24:10.457Z",
   "devdoc": {
     "details": "Interface for any contract that wants to support safeTransfers from KIP17 asset contracts.see http://kips.klaytn.com/KIPs/kip-17-non_fungible_token",
     "methods": {

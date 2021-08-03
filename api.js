@@ -682,7 +682,7 @@ app.post('/upload', upload.single('userfile'), function (req, res) {
         if (req.file.mimetype == "image/jpeg" || req.file.mimetype == "image/jpg" || req.file.mimetype == "image/png") {
             drop_db.run(`INSERT INTO "drop"(nfcID, description, dropStart, dropFinish)VALUES('${req.body.nfcID}', '${req.body.description}', '${req.body.dropStart}', '${req.body.dropFinish}')`);
             // exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.${req.file.originalname.split(".")[(req.file.originalname.split(".").length) - 1]}`, { silent: true });
-            exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.png}`, { silent: true });
+            exec(`mv ${req.file.path} ${req.file.destination}/${req.body.nfcID}.png`, { silent: true });
             return res.status(200).json({
                 result: `success`
             });

@@ -75,4 +75,4 @@ module.exports = {
     to_String: to_String
 }
 // registerProductInfo(123456,'1','2','3',"21-07-12", false, false, 4321)
-// allProductInfo()
+allProductInfo()

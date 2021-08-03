@@ -2900,8 +2900,8 @@
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-20T08:32:37.338Z",
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-08-03T07:24:10.455Z",
   "devdoc": {
     "details": "Required interface of an KIP17 compliant contract.",
     "methods": {
