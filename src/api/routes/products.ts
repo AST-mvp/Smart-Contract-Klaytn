@@ -1,3 +1,4 @@
+import JoiDateFactory from "@joi/date";
 import HttpException from "@src/exceptions/HttpException";
 import ProductsService from "@src/services/products";
 import { Product } from "@src/types";
@@ -32,7 +33,10 @@ const products = (app: Router) => {
         brandID: Joi.string().required(),
         productID: Joi.string().required(),
         editionID: Joi.string().required(),
-        manufactureDate: Joi.date().required(),
+        manufactureDate: Joi.extend(JoiDateFactory)
+          .date()
+          .format("YYYY-MM-DD")
+          .required(),
         limited: Joi.boolean().required(),
         drop: Joi.boolean().default(false),
       },
