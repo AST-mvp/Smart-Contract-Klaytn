@@ -30,7 +30,7 @@ export default class AuthService {
       where: { type: "email", email },
     });
     if (!user) return null;
-    return jwt.sign({ id: user.id }, config.jwtSecret);
+    return jwt.sign({ id: user.id, type: "email", email }, config.jwtSecret);
   }
 
   /**
