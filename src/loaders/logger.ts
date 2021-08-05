@@ -28,8 +28,8 @@ const createLabeledLogger = (label: string) =>
       logWithNoColor
     ),
     transports: [
-      new transports.File({ filename: "error.log", level: "error" }),
-      new transports.File({ filename: "combined.log", level: "verbose" }),
+      new transports.File({ filename: "log/error.log", level: "error" }),
+      new transports.File({ filename: "log/combined.log", level: "verbose" }),
       ...(process.env.NODE_ENV !== "production"
         ? [
             new transports.Console({
