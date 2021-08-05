@@ -38,6 +38,7 @@
     "moment-timezone": "^0.5.33",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "reflect-metadata": "^0.1.13",
     "request": "^2.87.0",
     "requestretry": "^2.0.2",
     "sha256": "^0.2.0",
@@ -45,6 +46,7 @@
     "shelljs.exec": "^1.1.8",
     "sqlite3": "^5.0.2",
     "truffle": "^5.4.3",
+    "typedi": "^0.10.0",
     "web3": "^1.4.0",
     "winston": "^3.3.3"
   },
