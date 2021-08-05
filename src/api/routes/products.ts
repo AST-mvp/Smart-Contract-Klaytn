@@ -63,6 +63,32 @@ const products = (app: Router) => {
       res.json(product);
     })
   );
+
+  route.post<
+    never,
+    { message: string },
+    {
+      nfcID: number;
+      userID: string;
+    }
+  >(
+    "/trade",
+    celebrate({
+      body: {
+        nfcID: Joi.number().required(),
+        userID: Joi.string().uuid().required(),
+      },
+    }),
+    expressAsyncHandler(async (req, res) => {
+      const productsService = Container.get(ProductsService);
+      const { nfcID, userID } = req.body;
+      if (userID === req.user?.id)
+        throw new HttpException(400, "can't change ownership to yourself");
+      const result = await productsService.changeOwnership(nfcID, userID);
+      if (!result) throw new HttpException(404, "product not found");
+      res.json({ message: "successfully transfered" });
+    })
+  );
 };
 
 export default products;

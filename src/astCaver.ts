@@ -67,7 +67,7 @@ export async function allProductInfo() {
   return result;
 }
 
-export async function changeOwnership(nfcID: number, new_ownerId: number) {
+export async function changeOwnership(nfcID: number, new_ownerId: string) {
   return allProductInfo().then((result) => {
     for (var i = 0; i < result.length; i++) {
       if (result[i][0] == nfcID) {
@@ -98,8 +98,7 @@ export async function nfcIDcheck(nfcID: number) {
   });
 }
 
-// @ts-ignore
-export function to_String(hex) {
+export function to_String(hex: string) {
   return ethers.utils.parseBytes32String(hex);
 }
 
