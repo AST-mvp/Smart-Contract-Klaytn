@@ -50,6 +50,19 @@ const products = (app: Router) => {
       res.json({ message: "successfully registered product" });
     })
   );
+
+  route.get<{ nfcid: number }>(
+    "/:nfcid",
+    celebrate({ params: { nfcid: Joi.number().required() } }),
+    expressAsyncHandler(async (req, res) => {
+      const productsService = Container.get(ProductsService);
+      const product = await productsService.fetchProductByNfcId(
+        req.params.nfcid
+      );
+      if (!product) throw new HttpException(404, "product not found");
+      res.json(product);
+    })
+  );
 };
 
 export default products;

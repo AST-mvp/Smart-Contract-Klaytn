@@ -11,11 +11,11 @@ export default class ProductsService {
    * fetch all products from caver
    */
   public async fetchAllProducts() {
-    const rawProductsInfo = await allProductInfo();
+    const rawProductsInfo = (await allProductInfo()) as any[][];
     return rawProductsInfo.map(
-      (rawProductInfo: any) =>
+      (rawProductInfo) =>
         ({
-          nfcID: rawProductInfo[0],
+          nfcID: Number.parseInt(rawProductInfo[0], 10),
           brandID: to_String(rawProductInfo[1]),
           productID: to_String(rawProductInfo[2]),
           editionID: to_String(rawProductInfo[3]),
@@ -45,5 +45,13 @@ export default class ProductsService {
         .map((v) => v.toString(16).padStart(2, "0"))
         .join("")}`
     );
+  }
+
+  /**
+   * fetch product by nfc id
+   */
+  public async fetchProductByNfcId(nfcId: number) {
+    const products = await this.fetchAllProducts();
+    return products.find((product) => product.nfcID === nfcId);
   }
 }
