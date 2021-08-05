@@ -1,10 +1,11 @@
 {
-  "name": "Ast",
+  "name": "ast",
   "version": "1.0.0",
-  "description": "## POST `/login`",
-  "main": "Ast_caver.js",
+  "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc && tscpaths -p tsconfig.tscpaths.json -s dist -o dist",
+    "start": "nodemon",
+    "inspect": "nodemon --inspect src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -42,5 +43,10 @@
     "sqlite3": "^5.0.2",
     "truffle": "^5.4.3",
     "web3": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
   }
 }
