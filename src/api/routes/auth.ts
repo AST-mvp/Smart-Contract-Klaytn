@@ -21,7 +21,7 @@ const auth = (app: Router) => {
     "/login",
     celebrate({
       body: {
-        email: Joi.string().required(),
+        email: Joi.string().email().required(),
         pw: Joi.string().required(),
       },
     }),
@@ -33,6 +33,30 @@ const auth = (app: Router) => {
       const token = await authService.generateEmailJwt(email);
       if (!token) throw new HttpException(500);
       res.json({ token });
+    })
+  );
+
+  route.post<
+    never,
+    { message: string },
+    {
+      email: string;
+      pw: string;
+    }
+  >(
+    "/register",
+    celebrate({
+      body: {
+        email: Joi.string().email().required(),
+        pw: Joi.string().required(),
+      },
+    }),
+    expressAsyncHandler(async (req, res) => {
+      const { email, pw } = req.body;
+      const authService = Container.get(AuthService);
+      if (!(await authService.registerEmail(email, pw)))
+        throw new HttpException(409, "email already exist");
+      res.json({ message: "successfully registered" });
     })
   );
 };
