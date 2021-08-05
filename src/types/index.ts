@@ -3,7 +3,7 @@ export interface Product {
   brandID: string;
   productID: string;
   editionID: string;
-  manufactureDate: string;
+  manufactureDate: Date;
   limited: boolean;
   drop: boolean;
   ownerID: string;
