@@ -6,5 +6,5 @@ export interface Product {
   manufactureDate: string;
   limited: boolean;
   drop: boolean;
-  ownerID: number;
+  ownerID: string;
 }

@@ -24,7 +24,7 @@ export async function registerProductInfo(
   manufactureDate: string,
   limited: boolean,
   appeared: boolean,
-  ownerID: number
+  ownerID: string
 ) {
   return allProductInfo().then((result) => {
     for (var i = 0; i < result.length; i++) {
@@ -49,15 +49,11 @@ export async function registerProductInfo(
       })
       .then(function (message: any) {
         caverLogger.debug(
-          "register product info",
-          nfcID,
-          toBytes32(brandID),
-          toBytes32(productID),
-          toBytes32(editionID),
-          toBytes32(manufactureDate),
-          limited,
-          appeared,
-          ownerID
+          `register product info ${nfcID} ${toBytes32(brandID)} ${toBytes32(
+            productID
+          )} ${toBytes32(editionID)} ${toBytes32(
+            manufactureDate
+          )} ${limited} ${appeared} ${ownerID}`
         );
         caverLogger.debug("register product info", message);
       });
