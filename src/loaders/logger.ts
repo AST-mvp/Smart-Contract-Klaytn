@@ -19,12 +19,12 @@ const logWithNoColor = format.printf(
     }`
 );
 
-const createLabeledLogger = (label: string) =>
+const createLabeledLogger = (label?: string) =>
   createLogger({
     format: format.combine(
       format.timestamp({ format: "YYYY-MM-DD HH:mm:ss Z" }),
       format.splat(),
-      format.label({ label }),
+      ...(label ? [format.label({ label })] : []),
       logWithNoColor
     ),
     transports: [
@@ -46,6 +46,7 @@ const createLabeledLogger = (label: string) =>
   });
 
 const logger = createLabeledLogger("DEFAULT");
+export const morganLogger = createLabeledLogger("MORGAN");
 
 process.on("unhandledRejection", (error) => {
   logger.error((error as Error).stack);

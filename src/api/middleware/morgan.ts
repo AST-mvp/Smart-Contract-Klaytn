@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import morgan from "morgan";
 import chalk from "chalk";
-import logger from "@src/loaders/logger";
+import logger, { morganLogger } from "@src/loaders/logger";
 
 const methodToColor = (method: string): typeof chalk.Color => {
   if (method === "GET") return "green";
@@ -34,7 +34,7 @@ export default morgan
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms :res[content-length]',
   {
     stream: {
-      write: (message) => logger.http(message.trim(), { label: "morgan" }),
+      write: (message) => morganLogger.http(message.trim()),
     },
   }
 );
