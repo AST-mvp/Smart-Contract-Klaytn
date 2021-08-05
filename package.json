@@ -24,6 +24,7 @@
     "ajv": "^6.12.6",
     "body-parser": "^1.19.0",
     "caver-js": "^1.6.3",
+    "chalk": "^4.1.2",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
@@ -42,7 +43,8 @@
     "shelljs.exec": "^1.1.8",
     "sqlite3": "^5.0.2",
     "truffle": "^5.4.3",
-    "web3": "^1.4.0"
+    "web3": "^1.4.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.12",
