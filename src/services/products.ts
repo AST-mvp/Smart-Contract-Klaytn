@@ -75,24 +75,17 @@ export default class ProductsService {
   }
 
   private hexToUuid(hex: string) {
-    try {
-      return uuidStringify(
-        [...Array(16)]
-          .map((_, i) => i)
-          .reduce(
-            ([string, prev]) =>
-              [
-                string.slice(2),
-                [...prev, Number.parseInt(string.slice(0, 2), 16)] as number[],
-              ] as const,
+    return uuidStringify(
+      [...Array(16)]
+        .map((_, i) => i)
+        .reduce(
+          ([string, prev]) =>
             [
-              BigInt(hex).toString(16).padStart(32, "0"),
-              [] as number[],
-            ] as const
-          )[1]
-      );
-    } catch {
-      return hex;
-    }
+              string.slice(2),
+              [...prev, Number.parseInt(string.slice(0, 2), 16)] as number[],
+            ] as const,
+          [BigInt(hex).toString(16).padStart(32, "0"), [] as number[]] as const
+        )[1]
+    );
   }
 }
