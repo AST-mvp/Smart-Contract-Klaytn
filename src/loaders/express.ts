@@ -1,3 +1,4 @@
+import api from "@src/api";
 import morgan from "@src/api/middleware/morgan";
 import HttpException from "@src/exceptions/HttpException";
 import express, { Request, Response, NextFunction } from "express";
@@ -11,6 +12,7 @@ const expressLoader = ({ app }: { app: express.Application }) => {
   app.use(morgan);
   app.use(bearerToken());
   app.use(express.json());
+  app.use(api());
   app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {
       res.status(err.status ?? 500).json({
