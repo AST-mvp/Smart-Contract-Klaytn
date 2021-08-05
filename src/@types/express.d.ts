@@ -1,9 +1,9 @@
-import { User } from "@src/types";
+import { UserAttributes } from "@src/model/User";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      user?: Omit<UserAttributes, "pw">;
     }
   }
 }

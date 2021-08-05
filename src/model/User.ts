@@ -4,14 +4,19 @@ import sequelize from "@src/loaders/sequelize";
 const UserTypeValues = ["email", "google", "kakao"] as const;
 type UserType = typeof UserTypeValues[number];
 
-interface UserAttributes {
+const PermissionTypeValues = ["admin"] as const;
+type PermissionType = typeof PermissionTypeValues[number];
+
+export interface UserAttributes {
   id: string;
   type: UserType;
   email?: string;
   pw?: string;
+  permission: PermissionType[];
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+interface UserCreationAttributes
+  extends Optional<UserAttributes, "id" | "permission"> {}
 
 class User
   extends Model<UserAttributes, UserCreationAttributes>
@@ -24,6 +29,8 @@ class User
   public email?: string;
 
   public pw?: string;
+
+  public permission!: PermissionType[];
 }
 
 User.init(
@@ -43,10 +50,12 @@ User.init(
     pw: {
       type: DataTypes.STRING,
     },
+    permission: {
+      type: DataTypes.ARRAY(DataTypes.ENUM(...PermissionTypeValues)),
+      defaultValue: [],
+    },
   },
   { sequelize, tableName: "users" }
 );
-
-User.sync();
 
 export default User;

@@ -1,4 +1,4 @@
-import User from "@src/model/User";
+import User, { UserAttributes } from "@src/model/User";
 import { Inject, Service } from "typedi";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -30,7 +30,9 @@ export default class AuthService {
       where: { type: "email", email },
     });
     if (!user) return null;
-    return jwt.sign({ id: user.id, type: "email", email }, config.jwtSecret);
+    const userData = user.toJSON() as UserAttributes;
+    delete userData.pw;
+    return jwt.sign(userData, config.jwtSecret);
   }
 
   /**
