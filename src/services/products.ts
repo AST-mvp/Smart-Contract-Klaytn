@@ -27,7 +27,7 @@ export default class ProductsService {
           manufactureDate: to_String(rawProductInfo[4]),
           limited: rawProductInfo[5],
           drop: rawProductInfo[6],
-          ownerID: rawProductInfo[7],
+          ownerID: this.hexToUuid(rawProductInfo[7]),
         } as Product)
     );
   }
@@ -62,9 +62,31 @@ export default class ProductsService {
     return changeOwnership(nfcId, this.uuidToHex(userId));
   }
 
+  public async getCloset(userId: string) {
+    const products = await this.fetchAllProducts();
+    return products.filter((product) => product.ownerID === userId);
+  }
+
   private uuidToHex(uuid: string) {
     return `0x${Array.from(uuidParse(uuid))
       .map((v) => v.toString(16).padStart(2, "0"))
       .join("")}`;
+  }
+  private hexToUuid(hex: string) {
+    return uuidStringify(
+      [...Array(16)]
+        .map((_, i) => i)
+        .reduce(
+          ([string, prev]) =>
+            [
+              string.slice(2),
+              [...prev, Number.parseInt(string.slice(0, 2), 16)] as number[],
+            ] as const,
+          [
+            BigInt(hex).toString(16).padStart(32, "0"),
+            [] as number[],
+          ] as const
+        )[1]
+    );
   }
 }
