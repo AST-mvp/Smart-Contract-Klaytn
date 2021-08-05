@@ -7,7 +7,7 @@ import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 const authRequired = (req: Request, res: Response, next: NextFunction) => {
   if (!req.token) return next(new HttpException(401));
   try {
-    req.user = jwt.verify(req.token, config.jwtToken) as User;
+    req.user = jwt.verify(req.token, config.jwtSecret) as User;
   } catch (e) {
     if (e instanceof JsonWebTokenError || e instanceof TokenExpiredError) {
       return next(new HttpException(401));

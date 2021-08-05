@@ -5,9 +5,9 @@ process.env.NODE_ENV = process.env.NODE_ENV || "production";
 
 const config = {
   port: process.env.PORT || 5000,
-  jwtToken: process.env.JWT_TOKEN || "",
+  jwtSecret: process.env.JWT_SECRET || "",
 };
 
-if (!config.jwtToken) throw new Error("JWT_TOKEN is not provided");
+if (!config.jwtSecret) throw new Error("JWT_SECRET is not provided");
 
 export default config;
