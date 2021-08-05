@@ -43,6 +43,7 @@
     "reflect-metadata": "^0.1.13",
     "request": "^2.87.0",
     "requestretry": "^2.0.2",
+    "sequelize": "^6.6.5",
     "sha256": "^0.2.0",
     "shelljs": "^0.8.4",
     "shelljs.exec": "^1.1.8",
@@ -56,6 +57,7 @@
     "@types/jsonwebtoken": "^8.5.4",
     "@types/morgan": "^1.9.3",
     "nodemon": "^2.0.12",
+    "pg": "^8.7.1",
     "ts-node": "^10.1.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"

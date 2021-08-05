@@ -47,6 +47,7 @@ const createLabeledLogger = (label?: string) =>
 
 const logger = createLabeledLogger("DEFAULT");
 export const morganLogger = createLabeledLogger("MORGAN");
+export const dbLogger = createLabeledLogger("DB");
 
 process.on("unhandledRejection", (error) => {
   logger.error((error as Error).stack);
