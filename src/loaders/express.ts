@@ -4,6 +4,7 @@ import HttpException from "@src/exceptions/HttpException";
 import { errors } from "celebrate";
 import express, { Request, Response, NextFunction } from "express";
 import bearerToken from "express-bearer-token";
+import logger from "./logger";
 
 const expressLoader = ({ app }: { app: express.Application }) => {
   app
@@ -17,6 +18,7 @@ const expressLoader = ({ app }: { app: express.Application }) => {
   app.use(errors());
   app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {
+      logger.error(err.stack);
       res.status(err.status ?? 500).json({
         message: err.message,
       });
