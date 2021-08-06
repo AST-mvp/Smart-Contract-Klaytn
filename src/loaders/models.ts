@@ -6,7 +6,7 @@ import Container from "typedi";
 
 const modelsLoader = () => {
   [User, Brand, Product, Nfc].forEach((model) =>
-    Container.set(`model.${model.tableName}`, model)
+    Container.set(`models.${model.tableName}`, model)
   );
 };
 

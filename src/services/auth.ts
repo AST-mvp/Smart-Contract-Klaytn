@@ -6,7 +6,7 @@ import config from "@src/config";
 
 @Service()
 export default class AuthService {
-  constructor(@Inject("model.users") private userModel: typeof User) {}
+  constructor(@Inject("models.users") private userModel: typeof User) {}
 
   /**
    * verify email and check password is correct
