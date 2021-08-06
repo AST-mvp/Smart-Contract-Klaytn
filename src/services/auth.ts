@@ -27,11 +27,11 @@ export default class AuthService {
   public async generateEmailJwt(email: string) {
     const user = await this.userModel.findOne({
       where: { type: "email", email },
+      attributes: { exclude: ["pw"] },
+      raw: true,
     });
     if (!user) return null;
-    const userData = user.toJSON() as UserAttributes;
-    delete userData.pw;
-    return jwt.sign(userData, config.jwtSecret);
+    return jwt.sign(user, config.jwtSecret);
   }
 
   /**
