@@ -9,9 +9,11 @@ export interface NfcAttributes {
   productId: string;
   editionNo: number | null;
   manufactureDate: Date;
+  dropStartAt: Date;
+  dropEndAt: Date;
 }
 
-interface NfcCreationAttributes extends Optional<NfcAttributes, "id"> {}
+export interface NfcCreationAttributes extends Optional<NfcAttributes, "id"> {}
 
 class Nfc
   extends Model<NfcAttributes, NfcCreationAttributes>
@@ -26,6 +28,10 @@ class Nfc
   public editionNo!: number | null;
 
   public manufactureDate!: Date;
+
+  public dropStartAt!: Date;
+
+  public dropEndAt!: Date;
 
   public static associations: {
     product: Association<Nfc, Product>;
@@ -52,6 +58,14 @@ Nfc.init(
       type: DataTypes.INTEGER.UNSIGNED,
     },
     manufactureDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    dropStartAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    dropEndAt: {
       type: DataTypes.DATE,
       allowNull: false,
     },
