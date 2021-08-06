@@ -1,4 +1,3 @@
-import JoiDateFactory from "@joi/date";
 import HttpException from "@src/exceptions/HttpException";
 import { BrandAttributes, BrandCreationAttributes } from "@src/model/Brand";
 import BrandsService from "@src/services/brands";
@@ -18,7 +17,6 @@ const brands = (app: Router) => {
     "/",
     checkPermission("admin"),
     expressAsyncHandler(async (req, res) => {
-      if (!req.user) throw new HttpException(401);
       const brandsService = Container.get(BrandsService);
       res.json(await brandsService.fetchAllBrands());
     })
