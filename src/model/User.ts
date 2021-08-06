@@ -31,12 +31,17 @@ class User
   public pw?: string;
 
   public permission!: PermissionType[];
+
+  public readonly createdAt!: Date;
+
+  public readonly updatedAt!: Date;
 }
 
 User.init(
   {
     id: {
       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },

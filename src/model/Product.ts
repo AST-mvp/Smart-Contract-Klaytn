@@ -1,0 +1,57 @@
+import sequelize from "@src/loaders/sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
+import Brand from "./Brand";
+
+export interface ProductAttributes {
+  id: string;
+  kind: string;
+  name: string;
+  brandId: string;
+}
+
+interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> {}
+
+class Product
+  extends Model<ProductAttributes, ProductCreationAttributes>
+  implements ProductAttributes
+{
+  public id!: string;
+
+  public kind!: string;
+
+  public name!: string;
+
+  public brandId!: string;
+
+  public readonly createdAt!: Date;
+
+  public readonly updatedAt!: Date;
+}
+
+Product.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
+    kind: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    brandId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+  },
+  { sequelize, tableName: "products" }
+);
+Product.hasOne(Brand, { foreignKey: "brandId" });
+Brand.belongsTo(Product);
+
+export default Product;

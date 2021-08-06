@@ -2,7 +2,6 @@ import User, { UserAttributes } from "@src/model/User";
 import { Inject, Service } from "typedi";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 import config from "@src/config";
 
 @Service()
@@ -46,7 +45,6 @@ export default class AuthService {
     if (user) return false;
     const hash = await bcrypt.hash(pw, 10);
     await this.userModel.create({
-      id: uuidv4(),
       type: "email",
       email,
       pw: hash,
