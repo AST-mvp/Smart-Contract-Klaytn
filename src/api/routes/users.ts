@@ -17,16 +17,6 @@ const users = (app: Router) => {
       res.json(req.user);
     })
   );
-
-  route.get(
-    "/closet",
-    expressAsyncHandler(async (req, res) => {
-      if (!req.user) throw new HttpException(401);
-      const productsService = Container.get(ProductsService);
-      const products = await productsService.getCloset(req.user.id);
-      res.json(products);
-    })
-  );
 };
 
 export default users;
