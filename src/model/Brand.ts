@@ -6,7 +6,8 @@ export interface BrandAttributes {
   name: string;
 }
 
-interface BrandCreationAttributes extends Optional<BrandAttributes, "id"> {}
+export interface BrandCreationAttributes
+  extends Optional<BrandAttributes, "id"> {}
 
 class Brand
   extends Model<BrandAttributes, BrandCreationAttributes>
