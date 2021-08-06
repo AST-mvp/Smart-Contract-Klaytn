@@ -31,6 +31,10 @@ class User
   public pw?: string;
 
   public permission!: PermissionType[];
+
+  public readonly createdAt!: Date;
+
+  public readonly updatedAt!: Date;
 }
 
 User.init(
