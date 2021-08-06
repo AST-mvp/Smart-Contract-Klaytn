@@ -16,7 +16,7 @@ export type DropType = typeof DropTypeValues[number];
 export default class NfcsService {
   constructor(
     @Inject("models.nfcs") private nfcModel: typeof Nfc,
-    @Inject("ProductsService") private productsService: ProductsService
+    @Inject(() => ProductsService) private productsService: ProductsService
   ) {}
 
   /**
