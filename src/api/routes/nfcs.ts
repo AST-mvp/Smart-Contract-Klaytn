@@ -34,7 +34,7 @@ const nfcs = (app: Router) => {
     celebrate({
       body: {
         productId: Joi.string().required(),
-        editionNo: Joi.number().required(),
+        editionNo: Joi.number(),
         manufactureDate: Joi.extend(JoiDateFactory)
           .date()
           .format("YYYY-MM-DD")
