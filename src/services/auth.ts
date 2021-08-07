@@ -31,7 +31,7 @@ export default class AuthService {
       raw: true,
     });
     if (!user) return null;
-    return jwt.sign(user, config.jwtSecret);
+    return jwt.sign({ id: user.id }, config.jwtSecret);
   }
 
   /**
@@ -55,5 +55,12 @@ export default class AuthService {
       pw: hash,
     });
     return true;
+  }
+
+  public async fetchUserByPk(userId: string) {
+    const userData = (await this.userModel.findByPk(userId, {
+      attributes: { exclude: ["pw"] },
+    })) as Omit<UserAttributes, "pw">;
+    return userData;
   }
 }
