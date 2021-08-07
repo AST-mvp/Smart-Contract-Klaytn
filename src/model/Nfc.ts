@@ -1,6 +1,7 @@
 import sequelize from "@src/loaders/sequelize";
 import { Association, DataTypes, Model, Optional } from "sequelize";
 import Product from "./Product";
+import User from "./User";
 
 export interface NfcAttributes {
   id: string;
@@ -32,7 +33,12 @@ class Nfc
 
   public dropEndAt!: Date;
 
+  public readonly owner?: User;
+
+  public readonly product?: Product;
+
   public static associations: {
+    owner: Association<Nfc, User>;
     product: Association<Nfc, Product>;
   };
 }
