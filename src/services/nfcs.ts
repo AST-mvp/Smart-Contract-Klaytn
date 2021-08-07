@@ -38,23 +38,24 @@ export default class NfcsService {
   /**
    * register new product
    * @param nfc ownerID is uuid
-   * @returns weather successfully register product. when productId doesn't exist, return false
+   * @returns registered product. when productId doesn't exist, return null
    */
   public async registerNfc(nfc: NfcCreationAttributes) {
     if (!(await this.productsService.hasProduct(nfc.productId))) {
-      return false;
+      return null;
     }
     const nfcData = await this.nfcModel.create(nfc);
-    return registerProductInfo(
+    await registerProductInfo(
       uuidToHex(nfcData.id),
       "0",
-      nfc.productId,
+      uuidToHex(nfc.productId),
       "0",
       "0",
       false,
       false,
       uuidToHex(nfc.ownerId)
     );
+    return nfcData;
   }
 
   /**

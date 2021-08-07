@@ -1,6 +1,6 @@
 import JoiDateFactory from "@joi/date";
 import HttpException from "@src/exceptions/HttpException";
-import { NfcCreationAttributes } from "@src/model/Nfc";
+import { NfcAttributes, NfcCreationAttributes } from "@src/model/Nfc";
 import NfcsService from "@src/services/nfcs";
 import { celebrate, Joi } from "celebrate";
 import { Router } from "express";
@@ -24,11 +24,7 @@ const nfcs = (app: Router) => {
     })
   );
 
-  route.post<
-    never,
-    { message: string },
-    Omit<NfcCreationAttributes, "ownerID">
-  >(
+  route.post<never, NfcAttributes, Omit<NfcCreationAttributes, "ownerID">>(
     "/",
     checkPermission("admin"),
     celebrate({
@@ -46,14 +42,12 @@ const nfcs = (app: Router) => {
     expressAsyncHandler(async (req, res) => {
       if (!req.user) throw new HttpException(401);
       const nfcsService = Container.get(NfcsService);
-      if (
-        !(await nfcsService.registerNfc({
-          ...req.body,
-          ownerId: req.user.id,
-        }))
-      )
-        throw new HttpException(404, "productId doesn't exist");
-      res.json({ message: "successfully registered product" });
+      const nfcData = await nfcsService.registerNfc({
+        ...req.body,
+        ownerId: req.user.id,
+      });
+      if (!nfcData) throw new HttpException(404, "productId doesn't exist");
+      res.json(nfcData);
     })
   );
 
