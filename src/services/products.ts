@@ -1,13 +1,17 @@
+import Brand from "@src/model/Brand";
 import Product, { ProductCreationAttributes } from "@src/model/Product";
 import { Inject, Service } from "typedi";
 @Service()
 export default class ProductsService {
   constructor(
+    @Inject("models.brands") private brandModel: typeof Brand,
     @Inject("models.products") private productModel: typeof Product
   ) {}
 
   public async fetchAllProducts() {
-    return this.productModel.findAll();
+    return this.productModel.findAll({
+      include: { model: this.brandModel, as: "brand" },
+    });
   }
 
   public async addNewProduct(productInfo: ProductCreationAttributes) {
@@ -15,7 +19,9 @@ export default class ProductsService {
   }
 
   public async fetchProductById(brandId: string) {
-    return this.productModel.findByPk(brandId);
+    return this.productModel.findByPk(brandId, {
+      include: { model: this.brandModel, as: "brand" },
+    });
   }
 
   public async hasProduct(productId: string) {

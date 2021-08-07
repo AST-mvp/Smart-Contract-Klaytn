@@ -8,6 +8,7 @@ import { Op } from "sequelize";
 import Nfc, { NfcCreationAttributes } from "@src/model/Nfc";
 import { hexToUuid, uuidToHex } from "@src/utils/uuid";
 import ProductsService from "./products";
+import User from "@src/model/User";
 
 export const DropTypeValues = ["ongoing", "finished"] as const;
 export type DropType = typeof DropTypeValues[number];
@@ -16,6 +17,7 @@ export type DropType = typeof DropTypeValues[number];
 export default class NfcsService {
   constructor(
     @Inject("models.nfcs") private nfcModel: typeof Nfc,
+    @Inject("models.users") private userModel: typeof User,
     @Inject(() => ProductsService) private productsService: ProductsService
   ) {}
 
@@ -32,12 +34,20 @@ export default class NfcsService {
       where: {
         id: { [Op.in]: productsPartialInfo.map((product) => product.id) },
       },
+      },
+      attributes: {
+        exclude: ["ownerId", "productId"],
+      },
+      include: [
+        { model: this.userModel, as: "owner", attributes: ["nickname"] },
+        "product",
+      ],
     });
   }
 
   /**
    * register new product
-   * @param nfc ownerID is uuid
+   * @param nfc ownerId is uuid
    * @returns registered product. when productId doesn't exist, return null
    */
   public async registerNfc(nfc: NfcCreationAttributes) {
