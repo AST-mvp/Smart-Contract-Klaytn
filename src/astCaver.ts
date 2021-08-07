@@ -36,7 +36,7 @@ export async function registerProductInfo(
       .registerProductInfo(
         nfcID,
         toBytes32(brandID),
-        toBytes32(productID),
+        productID,
         toBytes32(editionID),
         toBytes32(manufactureDate),
         limited,
