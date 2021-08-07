@@ -1,5 +1,6 @@
 const getDefaultMessage = (statusCode: number) => {
   if (statusCode === 401) return "you have to authorize to use this";
+  if (statusCode === 404) return "Not found";
   return "unknown server error occured.";
 };
 
