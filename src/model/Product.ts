@@ -53,6 +53,6 @@ Product.init(
   { sequelize, tableName: "products" }
 );
 Product.hasMany(Nfc, { foreignKey: "productId" });
-Nfc.belongsTo(Product, { foreignKey: "productId" });
+Nfc.belongsTo(Product, { as: "product" });
 
 export default Product;

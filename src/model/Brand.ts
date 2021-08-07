@@ -39,6 +39,6 @@ Brand.init(
   { sequelize, tableName: "brands" }
 );
 Brand.hasMany(Product, { foreignKey: "brandId" });
-Product.belongsTo(Brand, { foreignKey: "brandId" });
+Product.belongsTo(Brand, { as: "brand" });
 
 export default Brand;

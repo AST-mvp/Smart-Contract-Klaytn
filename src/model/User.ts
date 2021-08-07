@@ -13,10 +13,11 @@ export interface UserAttributes {
   type: UserType;
   email?: string;
   pw?: string;
+  nickname: string;
   permission: PermissionType[];
 }
 
-interface UserCreationAttributes
+export interface UserCreationAttributes
   extends Optional<UserAttributes, "id" | "permission"> {}
 
 class User
@@ -30,6 +31,8 @@ class User
   public email?: string;
 
   public pw?: string;
+
+  public nickname!: string;
 
   public permission!: PermissionType[];
 
@@ -56,6 +59,10 @@ User.init(
     pw: {
       type: DataTypes.STRING,
     },
+    nickname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     permission: {
       type: DataTypes.ARRAY(DataTypes.ENUM(...PermissionTypeValues)),
       defaultValue: [],
@@ -63,11 +70,7 @@ User.init(
   },
   { sequelize, tableName: "users" }
 );
-User.hasMany(Nfc, {
-  foreignKey: "ownerId",
-});
-Nfc.belongsTo(User, {
-  foreignKey: "ownerId",
-});
+User.hasMany(Nfc, { foreignKey: "ownerId" });
+Nfc.belongsTo(User, { as: "owner" });
 
 export default User;
