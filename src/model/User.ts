@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "@src/loaders/sequelize";
+import Nfc from "./Nfc";
 
 const UserTypeValues = ["email", "google", "kakao"] as const;
 type UserType = typeof UserTypeValues[number];
@@ -62,5 +63,11 @@ User.init(
   },
   { sequelize, tableName: "users" }
 );
+User.hasMany(Nfc, {
+  foreignKey: "ownerId",
+});
+Nfc.belongsTo(User, {
+  foreignKey: "ownerId",
+});
 
 export default User;

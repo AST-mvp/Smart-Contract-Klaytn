@@ -1,6 +1,6 @@
-import Brand from "@src/model/Brand";
 import Nfc from "@src/model/Nfc";
 import Product from "@src/model/Product";
+import Brand from "@src/model/Brand";
 import User from "@src/model/User";
 import Container from "typedi";
 

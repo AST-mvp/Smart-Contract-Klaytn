@@ -1,5 +1,6 @@
 import sequelize from "@src/loaders/sequelize";
 import { DataTypes, Model, Optional } from "sequelize";
+import Product from "./Product";
 
 export interface BrandAttributes {
   id: string;
@@ -37,5 +38,7 @@ Brand.init(
   },
   { sequelize, tableName: "brands" }
 );
+Brand.hasMany(Product, { foreignKey: "brandId" });
+Product.belongsTo(Brand, { foreignKey: "brandId" });
 
 export default Brand;

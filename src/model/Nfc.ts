@@ -1,7 +1,6 @@
 import sequelize from "@src/loaders/sequelize";
 import { Association, DataTypes, Model, Optional } from "sequelize";
 import Product from "./Product";
-import User from "./User";
 
 export interface NfcAttributes {
   id: string;
@@ -72,9 +71,5 @@ Nfc.init(
   },
   { sequelize, tableName: "nfcs" }
 );
-Nfc.hasOne(Product, { foreignKey: "productId" });
-Product.belongsTo(Nfc);
-Nfc.hasOne(User, { foreignKey: "ownerId" });
-User.belongsTo(Nfc);
 
 export default Nfc;
