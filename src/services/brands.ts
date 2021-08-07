@@ -2,7 +2,7 @@ import Brand, { BrandCreationAttributes } from "@src/model/Brand";
 import { Inject, Service } from "typedi";
 
 @Service()
-export default class NfcsService {
+export default class BrandsService {
   constructor(@Inject("models.brands") private brandModel: typeof Brand) {}
 
   public async fetchAllBrands() {
