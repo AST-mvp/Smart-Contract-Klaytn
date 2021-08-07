@@ -42,6 +42,7 @@ const auth = (app: Router) => {
     {
       email: string;
       pw: string;
+      nickname: string;
     }
   >(
     "/register",
@@ -49,12 +50,12 @@ const auth = (app: Router) => {
       body: {
         email: Joi.string().email().required(),
         pw: Joi.string().required(),
+        nickname: Joi.string().max(256).required(),
       },
     }),
     expressAsyncHandler(async (req, res) => {
-      const { email, pw } = req.body;
       const authService = Container.get(AuthService);
-      if (!(await authService.registerEmail(email, pw)))
+      if (!(await authService.registerEmail(req.body)))
         throw new HttpException(409, "email already exist");
       res.json({ message: "successfully registered" });
     })

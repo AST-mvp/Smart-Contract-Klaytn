@@ -1,4 +1,4 @@
-import User, { UserAttributes } from "@src/model/User";
+import User, { UserAttributes, UserCreationAttributes } from "@src/model/User";
 import { Inject, Service } from "typedi";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -38,7 +38,11 @@ export default class AuthService {
    * register with email
    * @returns if email doesn't exist (successfully register)
    */
-  public async registerEmail(email: string, pw: string) {
+  public async registerEmail({
+    email,
+    pw,
+    nickname,
+  }: Required<Pick<UserCreationAttributes, "email" | "pw" | "nickname">>) {
     const user = await this.userModel.findOne({
       where: { type: "email", email },
     });
@@ -47,6 +51,7 @@ export default class AuthService {
     await this.userModel.create({
       type: "email",
       email,
+      nickname,
       pw: hash,
     });
     return true;
