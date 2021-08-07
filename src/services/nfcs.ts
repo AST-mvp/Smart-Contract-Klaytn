@@ -38,7 +38,7 @@ export default class NfcsService {
         exclude: ["ownerId", "productId"],
       },
       include: [
-        { model: this.userModel, as: "owner", attributes: ["nickname"] },
+        { model: this.userModel, as: "owner", attributes: ["id", "nickname"] },
         "product",
       ],
     });
