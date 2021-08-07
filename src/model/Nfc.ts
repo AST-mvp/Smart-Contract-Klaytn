@@ -1,7 +1,6 @@
 import sequelize from "@src/loaders/sequelize";
 import { Association, DataTypes, Model, Optional } from "sequelize";
 import Product from "./Product";
-import User from "./User";
 
 export interface NfcAttributes {
   id: string;
