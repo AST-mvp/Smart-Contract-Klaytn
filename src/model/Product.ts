@@ -1,6 +1,6 @@
 import sequelize from "@src/loaders/sequelize";
 import { DataTypes, Model, Optional } from "sequelize";
-import Brand from "./Brand";
+import Nfc from "./Nfc";
 
 export interface ProductAttributes {
   id: string;
@@ -9,7 +9,8 @@ export interface ProductAttributes {
   brandId: string;
 }
 
-interface ProductCreationAttributes extends Optional<ProductAttributes, "id"> {}
+export interface ProductCreationAttributes
+  extends Optional<ProductAttributes, "id"> {}
 
 class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
@@ -51,7 +52,7 @@ Product.init(
   },
   { sequelize, tableName: "products" }
 );
-Product.hasOne(Brand, { foreignKey: "brandId" });
-Brand.belongsTo(Product);
+Product.hasMany(Nfc, { foreignKey: "productId" });
+Nfc.belongsTo(Product, { as: "product" });
 
 export default Product;

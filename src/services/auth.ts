@@ -1,4 +1,4 @@
-import User, { UserAttributes } from "@src/model/User";
+import User, { UserAttributes, UserCreationAttributes } from "@src/model/User";
 import { Inject, Service } from "typedi";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -6,7 +6,7 @@ import config from "@src/config";
 
 @Service()
 export default class AuthService {
-  constructor(@Inject("model.users") private userModel: typeof User) {}
+  constructor(@Inject("models.users") private userModel: typeof User) {}
 
   /**
    * verify email and check password is correct
@@ -27,18 +27,22 @@ export default class AuthService {
   public async generateEmailJwt(email: string) {
     const user = await this.userModel.findOne({
       where: { type: "email", email },
+      attributes: { exclude: ["pw"] },
+      raw: true,
     });
     if (!user) return null;
-    const userData = user.toJSON() as UserAttributes;
-    delete userData.pw;
-    return jwt.sign(userData, config.jwtSecret);
+    return jwt.sign({ id: user.id }, config.jwtSecret);
   }
 
   /**
    * register with email
    * @returns if email doesn't exist (successfully register)
    */
-  public async registerEmail(email: string, pw: string) {
+  public async registerEmail({
+    email,
+    pw,
+    nickname,
+  }: Required<Pick<UserCreationAttributes, "email" | "pw" | "nickname">>) {
     const user = await this.userModel.findOne({
       where: { type: "email", email },
     });
@@ -47,8 +51,16 @@ export default class AuthService {
     await this.userModel.create({
       type: "email",
       email,
+      nickname,
       pw: hash,
     });
     return true;
+  }
+
+  public async fetchUserByPk(userId: string) {
+    const userData = (await this.userModel.findByPk(userId, {
+      attributes: { exclude: ["pw"] },
+    })) as Omit<UserAttributes, "pw">;
+    return userData;
   }
 }

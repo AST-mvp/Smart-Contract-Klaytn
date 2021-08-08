@@ -17,7 +17,7 @@ const cont_addr = require("../build/contracts/Logic.json").networks[1001]
 const Ast = new caver.contract(abi, cont_addr);
 
 export async function registerProductInfo(
-  nfcID: number,
+  nfcID: string,
   brandID: string,
   productID: string,
   editionID: string,
@@ -36,7 +36,7 @@ export async function registerProductInfo(
       .registerProductInfo(
         nfcID,
         toBytes32(brandID),
-        toBytes32(productID),
+        productID,
         toBytes32(editionID),
         toBytes32(manufactureDate),
         limited,

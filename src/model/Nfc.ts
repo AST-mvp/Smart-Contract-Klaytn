@@ -9,9 +9,11 @@ export interface NfcAttributes {
   productId: string;
   editionNo: number | null;
   manufactureDate: Date;
+  dropStartAt: Date;
+  dropEndAt: Date;
 }
 
-interface NfcCreationAttributes extends Optional<NfcAttributes, "id"> {}
+export interface NfcCreationAttributes extends Optional<NfcAttributes, "id"> {}
 
 class Nfc
   extends Model<NfcAttributes, NfcCreationAttributes>
@@ -27,7 +29,16 @@ class Nfc
 
   public manufactureDate!: Date;
 
+  public dropStartAt!: Date;
+
+  public dropEndAt!: Date;
+
+  public readonly owner?: User;
+
+  public readonly product?: Product;
+
   public static associations: {
+    owner: Association<Nfc, User>;
     product: Association<Nfc, Product>;
   };
 }
@@ -55,12 +66,16 @@ Nfc.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    dropStartAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    dropEndAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   { sequelize, tableName: "nfcs" }
 );
-Nfc.hasOne(Product, { foreignKey: "productId" });
-Product.belongsTo(Nfc);
-Nfc.hasOne(User, { foreignKey: "ownerId" });
-User.belongsTo(Nfc);
 
 export default Nfc;

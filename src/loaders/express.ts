@@ -16,6 +16,9 @@ const expressLoader = ({ app }: { app: express.Application }) => {
   app.use(express.json());
   app.use(api());
   app.use(errors());
+  app.use(() => {
+    throw new HttpException(404);
+  });
   app.use(
     (err: HttpException, req: Request, res: Response, next: NextFunction) => {
       logger.error(err.stack);

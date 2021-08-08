@@ -1,12 +1,14 @@
 import sequelize from "@src/loaders/sequelize";
 import { DataTypes, Model, Optional } from "sequelize";
+import Product from "./Product";
 
 export interface BrandAttributes {
   id: string;
   name: string;
 }
 
-interface BrandCreationAttributes extends Optional<BrandAttributes, "id"> {}
+export interface BrandCreationAttributes
+  extends Optional<BrandAttributes, "id"> {}
 
 class Brand
   extends Model<BrandAttributes, BrandCreationAttributes>
@@ -36,5 +38,7 @@ Brand.init(
   },
   { sequelize, tableName: "brands" }
 );
+Brand.hasMany(Product, { foreignKey: "brandId" });
+Product.belongsTo(Brand, { as: "brand" });
 
 export default Brand;
