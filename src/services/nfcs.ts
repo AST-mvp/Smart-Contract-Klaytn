@@ -34,12 +34,11 @@ export default class NfcsService {
       where: {
         id: { [Op.in]: productsPartialInfo.map((product) => product.id) },
       },
-      },
       attributes: {
         exclude: ["ownerId", "productId"],
       },
       include: [
-        { model: this.userModel, as: "owner", attributes: ["nickname"] },
+        { model: this.userModel, as: "owner", attributes: ["id", "nickname"] },
         "product",
       ],
     });
