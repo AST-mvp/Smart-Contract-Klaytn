@@ -87,7 +87,7 @@ export default class AuthService {
   ): Promise<GoogleUserInfo> {
     return (
       await fetch(
-        `https://www.googleapis.com/oauth2/v2/userinfo=${accessToken}`
+        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`
       )
     ).json();
   }
@@ -124,7 +124,7 @@ export default class AuthService {
     const userInfo = await this.fetchKakaoUserInformation(accessToken);
     if (!userInfo.id) return null;
     const [userData] = await this.userModel.findCreateFind({
-      where: { type: "kakao", oauthId: userInfo.id },
+      where: { type: "kakao", oauthId: userInfo.id.toString() },
       defaults: {
         type: "kakao",
         nickname: userInfo.properties.nickname,
