@@ -14,6 +14,7 @@ export interface UserAttributes {
   email?: string;
   pw?: string;
   nickname: string;
+  oauthId?: string;
   permission: PermissionType[];
 }
 
@@ -33,6 +34,8 @@ class User
   public pw?: string;
 
   public nickname!: string;
+
+  public oauthId?: string;
 
   public permission!: PermissionType[];
 
@@ -62,6 +65,9 @@ User.init(
     nickname: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    oauthId: {
+      type: DataTypes.STRING,
     },
     permission: {
       type: DataTypes.ARRAY(DataTypes.ENUM(...PermissionTypeValues)),

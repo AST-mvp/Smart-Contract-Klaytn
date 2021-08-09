@@ -1,8 +1,26 @@
+import fetch from "node-fetch";
 import User, { UserAttributes, UserCreationAttributes } from "@src/model/User";
 import { Inject, Service } from "typedi";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "@src/config";
+
+interface GoogleUserInfo {
+  picture: string;
+  name: string;
+  locale: string;
+  email: string;
+  given_name: string;
+  id: string;
+  verified_email: boolean;
+}
+
+interface KakaoUserInfo {
+  id: number;
+  properties: {
+    nickname: string;
+  };
+}
 
 @Service()
 export default class AuthService {
@@ -62,5 +80,56 @@ export default class AuthService {
       attributes: { exclude: ["pw"] },
     })) as Omit<UserAttributes, "pw">;
     return userData;
+  }
+
+  private async fetchGoogleUserInformation(
+    accessToken: string
+  ): Promise<GoogleUserInfo> {
+    return (
+      await fetch(
+        `https://www.googleapis.com/oauth2/v2/userinfo=${accessToken}`
+      )
+    ).json();
+  }
+
+  /**
+   * login using google oauth access token
+   * @returns jwt. if fail fetch user information, return null.
+   */
+  public async loginWithGoogle(accessToken: string) {
+    const userInfo = await this.fetchGoogleUserInformation(accessToken);
+    if (!userInfo.id) return null;
+    const [userData] = await this.userModel.findCreateFind({
+      where: { type: "google", oauthId: userInfo.id },
+      defaults: {
+        type: "google",
+        nickname: userInfo.given_name,
+        email: userInfo.email,
+      },
+    });
+    return jwt.sign({ id: userData.id }, config.jwtSecret);
+  }
+
+  private async fetchKakaoUserInformation(
+    accessToken: string
+  ): Promise<KakaoUserInfo> {
+    return (
+      await fetch(`https://kapi.kakao.com/v2/user/me`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+    ).json();
+  }
+
+  public async loginWithKakao(accessToken: string) {
+    const userInfo = await this.fetchKakaoUserInformation(accessToken);
+    if (!userInfo.id) return null;
+    const [userData] = await this.userModel.findCreateFind({
+      where: { type: "kakao", oauthId: userInfo.id },
+      defaults: {
+        type: "kakao",
+        nickname: userInfo.properties.nickname,
+      },
+    });
+    return jwt.sign({ id: userData.id }, config.jwtSecret);
   }
 }
