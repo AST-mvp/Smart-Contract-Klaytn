@@ -1,4 +1,5 @@
 import HttpException from "@src/exceptions/HttpException";
+import logger from "@src/loaders/logger";
 import AuthService from "@src/services/auth";
 import { celebrate, Joi } from "celebrate";
 import { Router } from "express";
@@ -58,6 +59,36 @@ const auth = (app: Router) => {
       if (!(await authService.registerEmail(req.body)))
         throw new HttpException(409, "email already exist");
       res.json({ message: "successfully registered" });
+    })
+  );
+
+  route.post<
+    never,
+    { message: string } | { token: string },
+    { accessToken: string }
+  >(
+    "/oauth/google",
+    celebrate({ body: { accessToken: Joi.string().required() } }),
+    expressAsyncHandler(async (req, res) => {
+      const authService = Container.get(AuthService);
+      const token = await authService.loginWithGoogle(req.body.accessToken);
+      if (!token) throw new HttpException(500);
+      res.json({ token });
+    })
+  );
+
+  route.post<
+    never,
+    { message: string } | { token: string },
+    { accessToken: string }
+  >(
+    "/oauth/kakao",
+    celebrate({ body: { accessToken: Joi.string().required() } }),
+    expressAsyncHandler(async (req, res) => {
+      const authService = Container.get(AuthService);
+      const token = await authService.loginWithKakao(req.body.accessToken);
+      if (!token) throw new HttpException(500);
+      res.json({ token });
     })
   );
 };
