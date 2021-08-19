@@ -3,3 +3,4 @@ log/
 swagger/
 .openzeppelin/.session
 .env
+serviceAccountKey.json
