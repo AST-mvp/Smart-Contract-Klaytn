@@ -18,6 +18,7 @@ const drops = (app: Router) => {
   route.get<
     never,
     (ProductAttributes & { imageUri: string })[],
+    any,
     never,
     {
       type: DropType;

@@ -17,6 +17,8 @@ export default class ProductsService {
   public async fetchAllProducts() {
     const products = await this.productModel.findAll({
       include: { model: this.brandModel, as: 'brand' },
+      raw: true,
+      nest: true,
     });
     return Promise.all(
       products.map(async (product) => ({
