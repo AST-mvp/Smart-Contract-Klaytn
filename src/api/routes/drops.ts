@@ -1,5 +1,5 @@
 import HttpException from '@src/exceptions/HttpException';
-import Product from '@src/model/Product';
+import { ProductAttributes } from '@src/model/Product';
 import ProductsService, {
   DropType,
   DropTypeValues,
@@ -17,7 +17,7 @@ const drops = (app: Router) => {
 
   route.get<
     never,
-    Product[],
+    (ProductAttributes & { imageUri: string })[],
     never,
     {
       type: DropType;

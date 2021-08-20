@@ -1,16 +1,17 @@
-import sequelize from "@src/loaders/sequelize";
-import { DataTypes, Model, Optional } from "sequelize";
-import Nfc from "./Nfc";
+import sequelize from '@src/loaders/sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
+import Nfc from './Nfc';
 
 export interface ProductAttributes {
   id: string;
   kind: string;
   name: string;
   brandId: string;
+  filename: string;
 }
 
 export interface ProductCreationAttributes
-  extends Optional<ProductAttributes, "id"> {}
+  extends Optional<ProductAttributes, 'id'> {}
 
 class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
@@ -23,6 +24,8 @@ class Product
   public name!: string;
 
   public brandId!: string;
+
+  public filename!: string;
 
   public readonly createdAt!: Date;
 
@@ -49,10 +52,13 @@ Product.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    filename: {
+      type: DataTypes.STRING,
+    },
   },
-  { sequelize, tableName: "products" }
+  { sequelize, tableName: 'products' },
 );
-Product.hasMany(Nfc, { foreignKey: "productId" });
-Nfc.belongsTo(Product, { as: "product" });
+Product.hasMany(Nfc, { foreignKey: 'productId' });
+Nfc.belongsTo(Product, { as: 'product' });
 
 export default Product;

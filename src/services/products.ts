@@ -1,6 +1,7 @@
 import Brand from '@src/model/Brand';
 import Product, { ProductCreationAttributes } from '@src/model/Product';
 import { Inject, Service } from 'typedi';
+import FilesService from './files';
 
 export const DropTypeValues = ['ongoing', 'finished'] as const;
 export type DropType = typeof DropTypeValues[number];
@@ -10,12 +11,19 @@ export default class ProductsService {
   constructor(
     @Inject('models.brands') private brandModel: typeof Brand,
     @Inject('models.products') private productModel: typeof Product,
+    @Inject(() => FilesService) private filesService: FilesService,
   ) {}
 
   public async fetchAllProducts() {
-    return this.productModel.findAll({
+    const products = await this.productModel.findAll({
       include: { model: this.brandModel, as: 'brand' },
     });
+    return Promise.all(
+      products.map(async (product) => ({
+        ...product,
+        imageUri: await this.filesService.generatePublicUrl(product.filename),
+      })),
+    );
   }
 
   public async addNewProduct(productInfo: ProductCreationAttributes) {
