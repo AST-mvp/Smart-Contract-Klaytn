@@ -2,6 +2,7 @@ import { Router } from 'express';
 import auth from './routes/auth';
 import brands from './routes/brands';
 import closet from './routes/closet';
+import drops from './routes/drops';
 import files from './routes/files';
 import nfcs from './routes/nfcs';
 import products from './routes/products';
@@ -12,6 +13,7 @@ const api = () => {
   auth(router);
   brands(router);
   closet(router);
+  drops(router);
   files(router);
   nfcs(router);
   products(router);
